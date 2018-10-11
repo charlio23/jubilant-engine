@@ -77,7 +77,7 @@ public class CentralsBoard {
 			else ganancia -= 5*clientes.get(id).getConsumo();
 		}
 		
-        return ganancia;
+        return -ganancia;
     }
 
 
