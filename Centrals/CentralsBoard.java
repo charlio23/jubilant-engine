@@ -4,6 +4,7 @@ import IA.Energia.Centrales;
 import IA.Energia.Clientes;
 import IA.Energia.Central;
 import IA.Energia.Cliente;
+import IA.Energia.VEnergia;
 
 import java.util.Random;
 
@@ -74,7 +75,7 @@ public class CentralsBoard {
 		//Clientes
 		for (int id = 0; id < state.length; ++id) {
 			if (state[id] != -1) ganancia += precioTarifa(id);
-			else ganancia -= 5*clientes.get(id).getConsumo();
+			else ganancia -= getTarifaClientePenalizacion(clientes.get(id).getContrato())*clientes.get(id).getConsumo();
 		}
 		
         return -ganancia;
@@ -133,56 +134,28 @@ public class CentralsBoard {
     // Pre: clId es el identificador de un cliente
     // 		centId es el identificador de una central 
 	private double perdida(int clId, int centId) {
-		double dis = distance(clId, centId);
-		if (dis <= 10) return 0.0;
-		if (dis <= 25) return 0.1;
-		if (dis <= 50) return 0.2;
-		if (dis <= 75) return 0.4;
-		return 0.6;
+		return getPerdida(distance(clId, centId));
 	}
 	
     // Pre: centId es el identificador de una central 	
 	private double costeMarcha(int centId) {
 		Central central = centrales.get(centId);
-		switch (central.getTipo()) {
-			case CENTRALA: return 2000.0 + 5.0*central.getProduccion();
-			case CENTRALB: return 1000.0 + 8.0*central.getProduccion();
-			case CENTRALC: return 500.0 + 15.0*central.getProduccion();
-			default: break;
-		}
-		return 0;
+		return getCosteMarcha(central.getTipo()) + getCosteProduccionMW(central.getTipo())*central.getProduccion();
 	}
 
     // Pre: centId es el identificador de una central 	
 	private double costeParada(int centId) {
 		Central central = centrales.get(centId);
-		switch (central.getTipo()) {
-			case CENTRALA: return 1500.0;
-			case CENTRALB: return 500.0;
-			case CENTRALC: return 150.0;
-			default: break;
-		}
-		return 0;
+		return getCosteParada(central.getTipo());
 	}
 
     // Pre: clId es el identificador de un cliente 	
 	private double precioTarifa(int clId) {
 		Cliente cliente = clientes.get(clId);
 		if (cliente.getTipo() == GARANTIZADO) {
-			switch (cliente.getContrato()) {
-				case CLIENTEXG: return 40.0*cliente.getConsumo();
-				case CLIENTEMG: return 50.0*cliente.getConsumo();
-				case CLIENTEG: return 60.0*cliente.getConsumo();
-				default: break;
-			}
+			return getTarifaClienteGarantizado(cliente.getContrato)*cliente.getConsumo();
 		} else {
-			switch (cliente.getContrato()) {
-				case CLIENTEXG: return 30.0*cliente.getConsumo();
-				case CLIENTEMG: return 40.0*cliente.getConsumo();
-				case CLIENTEG: return 50.0*cliente.getConsumo();
-				default: break;
-			}
+			return getTarifaClienteNoGarantizado(cliente.getContrato)*cliente.getConsumo();
 		}
-		return 0;
 	}
 }
