@@ -10,19 +10,23 @@ import java.util.Random;
 
 public class CentralsBoard {
 
-    private int [] state;
-    private Centrales centrales;
-    private Clientes clientes;
+    private int[] state;
+    private static Centrales centrales;
+    private static Clientes clientes;
 
     public static final int GARANTIZADO = 0;
     public static final int NOGARANTIZADO = 1;
 
-    public CentralsBoard(Centrales centrales, Clientes clientes, boolean primera) {
+    public static final int RANDOM = 0;
+    public static final int DISTANCE = 1;
+    public static final int FUZZY = 2;
+
+    public CentralsBoard(Centrales centrales, Clientes clientes, int estrategia) {
         this.centrales = centrales;
         this.clientes = clientes;
         this.state = new int[clientes.size()];
 
-        if (primera) {
+        if (estrategia == RANDOM) {
             // Se asignan centrales a clientes garantizados de forma random
             Random r = new Random();
             for (int id = 0; id < state.length; ++id) {
@@ -32,7 +36,8 @@ public class CentralsBoard {
                     state[id] = -1;
                 }
             }
-        } else {
+        }
+        if(estrategia == DISTANCE) {
             // Se asigna la central mas proxima a cada cliente garantizado
             for (int id = 0; id < state.length; ++id) {
                 int centId = -1;
@@ -49,6 +54,33 @@ public class CentralsBoard {
                 state[id] = centId;
             }
         }
+        if(estrategia == FUZZY) {
+            for(int id = 0; id < state.length; ++id) {
+                double cand[] = new double[centrales.size()];
+                double cumChance = 0;
+                for(int jd = 0; jd < centrales.size(); ++jd) {
+                    double reach = 1-perdida(id, jd);
+                    double power = centrales.get(jd).getProduccion();
+                    cumChance += reach*reach*power;
+                    cand[id] = cumChance;
+                    //Maybe consider existing assignments
+                }
+                double frand = Math.random()*cumChance;
+                state[id] = -1;
+                for(int jd = 0; state[id] == -1 && jd < centrales.size(); ++jd) {
+                    if(cand[jd] > frand) state[id] = jd;
+                }
+            }
+        }
+    }
+    
+    public CentralsBoard(int numCentrales, int[] pCentrales, int numClientes, int[] pClientes, int estrategia) {
+        state = new int[clientes.size()];
+        //centrales = new Centrales(numCentrales);
+        
+    }
+    
+    private CentralsBoard() {
     }
 
     public double heuristicFunction() {
@@ -170,5 +202,25 @@ public class CentralsBoard {
             System.out.println(e.getMessage());
         }
         return 0;
+    }
+    
+    public int getClientSize() {
+        return clientes.size();
+    }
+    
+    public int getCentralesSize() {
+        return centrales.size();
+    }
+    
+    public boolean isGuaranteed(int id) {
+        return clientes.get(id).getTipo() == GARANTIZADO;
+    }
+    
+    public CentralsBoard getCopy() {
+        CentralsBoard curBoard = new CentralsBoard();
+        curBoard.state = this.state.clone();
+        curBoard.clientes = this.clientes;
+        curBoard.centrales = this.centrales;
+        return curBoard;
     }
 }
