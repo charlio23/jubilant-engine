@@ -20,6 +20,8 @@ public class CentralsBoard {
     public static final int RANDOM = 0;
     public static final int DISTANCE = 1;
     public static final int FUZZY = 2;
+    
+    public static final double MAXBENEFIT = 50000;
 
     public CentralsBoard(Centrales centrales, Clientes clientes, int estrategia) {
         this.centrales = centrales;
@@ -82,19 +84,20 @@ public class CentralsBoard {
     
     private CentralsBoard() {
     }
-
+    
+    //TODO: Change heuristic funtion to reflect penalizations
     public double heuristicFunction() {
         //Ganancia
         double ganancia = 0;
 
         //Centrales
-        boolean[] centralEnMarcha = new boolean[centrales.size()];
+        double[] suministro = new double[centrales.size()];
         for (int id = 0; id < state.length; ++id) {
             if (state[id] != -1)
-                centralEnMarcha[state[id]] = true;
+                suministro[state[id]] = clientes.get(id).getConsumo()/(1-perdida(id, state[id]));
         }
         for (int jd = 0; jd < centrales.size(); ++jd) {
-            if (centralEnMarcha[jd]) ganancia -= costeMarcha(jd);
+            if (suministro[jd] > 0) ganancia -= costeMarcha(jd);
             else ganancia -= costeParada(jd);
         }
 
@@ -106,6 +109,11 @@ public class CentralsBoard {
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
+        }
+        
+        for(int jd = 0; jd < centrales.size(); ++jd) {
+            double overflow = Math.max(0.0, suministro[jd] - centrales.get(jd).getProduccion());
+            ganancia -= overflow * overflow * MAXBENEFIT;
         }
 
         return -ganancia;
@@ -204,7 +212,7 @@ public class CentralsBoard {
         return 0;
     }
     
-    public int getClientSize() {
+    public int getClientesSize() {
         return clientes.size();
     }
     
@@ -219,8 +227,6 @@ public class CentralsBoard {
     public CentralsBoard getCopy() {
         CentralsBoard curBoard = new CentralsBoard();
         curBoard.state = this.state.clone();
-        curBoard.clientes = this.clientes;
-        curBoard.centrales = this.centrales;
         return curBoard;
     }
 }
