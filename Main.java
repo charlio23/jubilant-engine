@@ -1,3 +1,4 @@
+import Centrals.CentralsBoard;
 import Centrals.CentralsGoalTest;
 import Centrals.CentralsHeuristicFunction;
 import Centrals.CentralsSuccessorFunction;
@@ -19,14 +20,15 @@ public class Main {
             int[] param = new int[]{5, 10, 25};
             Centrales c = new Centrales(param, 4);
             double[] propc = new double[]{0.2D, 0.3D, 0.5D};
-            Clientes cl = new Clientes(1000, propc, 0.5D, 1);
-            CentralsBoard centralsBoard = new CentralsBoard(c,cl,2);
+            Clientes cl = new Clientes(1000,propc, 0.5D, 1);
+            CentralsBoard centralsBoard = new CentralsBoard(c,cl,CentralsBoard.FUZZY);
             Problem p = new Problem(centralsBoard,
                                     new CentralsSuccessorFunction(),
                                     new CentralsGoalTest(),
                                     new CentralsHeuristicFunction());
             Search search = new HillClimbingSearch();
             SearchAgent agent = new SearchAgent(p, search);
+
             System.out.println();
             printActions(agent.getActions());
             printInstrumentation(agent.getInstrumentation());

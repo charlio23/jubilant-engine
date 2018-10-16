@@ -152,8 +152,12 @@ public class CentralsBoard {
         }
 
         for(int jd = 0; jd < centrales.size(); ++jd) {
-            double overflow = Math.max(0.0, suministro[jd] - centrales.get(jd).getProduccion());
-            ganancia -= overflow * overflow * MAXBENEFIT*centrales.size();
+            double overflow = suministro[jd] - centrales.get(jd).getProduccion();
+            if(overflow > 0) {
+                overflow = Math.max(overflow, 1.0);
+                ganancia -= overflow * overflow * MAXBENEFIT * centrales.size();
+            }
+
         }
 
         return -ganancia;
@@ -181,10 +185,13 @@ public class CentralsBoard {
         //No se puede asignar a una central mas demanda de la que puede producir
         double[] demanda = new double[centrales.size()];
         double[] maxProduccion = new double[centrales.size()];
-        for (int id = 0; id < centrales.size(); ++id)
+        for (int id = 0; id < centrales.size(); ++id) {
+            demanda[id] = 0;
             maxProduccion[id] = centrales.get(id).getProduccion();
+        }
         for (int id = 0; id < state.length; ++id) {
             int centId = state[id];
+            if (centId == -1) continue;
             demanda[centId] += clientes.get(id).getConsumo()/(1-perdida(id,centId));
             if (demanda[centId] > maxProduccion[centId]) return false;
         }
