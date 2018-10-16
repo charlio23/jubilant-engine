@@ -1,9 +1,10 @@
 import Centrals.CentralsBoard;
 import Centrals.CentralsGoalTest;
-import Centrals.CentralsHeuristicFunction;
+//import Centrals.CentralsHeuristicFunction;
 import Centrals.CentralsHeuristicFunction1;
-import Centrals.CentralsSuccessorFunction;
+//import Centrals.CentralsSuccessorFunction;
 import Centrals.CentralsSuccessorFunction1;
+import Centrals.CentralsSuccessorFunction2;
 import IA.Energia.Centrales;
 import IA.Energia.Clientes;
 import aima.search.framework.Problem;
@@ -25,7 +26,7 @@ public class Main {
             Clientes cl = new Clientes(1000,propc, 0.5D, 1);
             CentralsBoard centralsBoard = new CentralsBoard(c,cl,CentralsBoard.FUZZY);
             Problem p = new Problem(centralsBoard,
-                                    new CentralsSuccessorFunction1(),
+                                    new CentralsSuccessorFunction2(),
                                     new CentralsGoalTest(),
                                     new CentralsHeuristicFunction1());
             Search search = new HillClimbingSearch();
