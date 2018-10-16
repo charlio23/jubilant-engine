@@ -11,9 +11,10 @@ public class CentralsSuccessorFunction implements SuccessorFunction {
         CentralsBoard board = (CentralsBoard) o;
         List successors = new ArrayList();
         //board.printState();
-        if(board.isCorrect())System.out.print("Correcte");
+        if(board.isCorrect()){
+            System.out.println(String.valueOf(board.getGanancia()));
+        }
         else System.out.print("ROP");
-        System.out.println(String.valueOf(board.heuristicFunction()));
         for (int id = 0; id < board.getClientesSize(); ++id) {
             int jd;
             if (board.isGuaranteed(id)) jd = 0;
@@ -25,7 +26,6 @@ public class CentralsSuccessorFunction implements SuccessorFunction {
                 }
             }
         }
-        
         return successors;
     }
 }

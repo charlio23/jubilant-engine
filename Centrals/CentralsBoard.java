@@ -11,12 +11,11 @@ import java.util.Random;
 public class CentralsBoard {
 
     private int[] state;
-    private static Centrales centrales;
-    private static Clientes clientes;
+    public static Centrales centrales;
+    public static Clientes clientes;
 
     public static final int GARANTIZADO = 0;
     public static final int NOGARANTIZADO = 1;
-
 
     public static final int ONE = 0;
     public static final int RANDOM1 = 1;
@@ -25,7 +24,6 @@ public class CentralsBoard {
     public static final int DISTANCE2 = 4;
     public static final int FUZZY = 5;
 
-    public static final double MAXBENEFIT = 50000;
 
     public CentralsBoard(Centrales centrales, Clientes clientes, int estrategia) {
         this.centrales = centrales;
@@ -118,71 +116,10 @@ public class CentralsBoard {
     }
 
     //TODO: Change heuristic funtion to reflect penalizations
-    public double heuristicFunction() {
-        //Ganancia
-        double ganancia = 0;
-
-        //Centrales
-        double[] suministro = new double[centrales.size()];
-        for(int i = 0; i < suministro.length; ++i) {
-            suministro[i] = 0.0;
-        }
-        for (int id = 0; id < state.length; ++id) {
-            if (state[id] != -1)
-                try {
-                    suministro[state[id]] += clientes.get(id).getConsumo() / (1 - perdida(id, state[id]));
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-        }
-        for (int jd = 0; jd < centrales.size(); ++jd) {
-            if (suministro[jd] > 0) ganancia -= costeMarcha(jd);
-            else ganancia -= costeParada(jd);
-        }
-
-        //Clientes
-        for (int id = 0; id < state.length; ++id) {
-            try{
-                if (state[id] != -1) ganancia += precioTarifa(id);
-                else ganancia -= VEnergia.getTarifaClientePenalizacion(clientes.get(id).getContrato())*clientes.get(id).getConsumo();
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-            }
-        }
-
-        for(int jd = 0; jd < centrales.size(); ++jd) {
-            double overflow = suministro[jd] - centrales.get(jd).getProduccion();
-            if(overflow > 0) {
-                overflow = Math.max(overflow, 1.0);
-                ganancia -= overflow * overflow * MAXBENEFIT * centrales.size();
-            }
-
-        }
-
-        return -ganancia;
-    }
 
 
-    public boolean allGarantizados() {
-        //Todos los clientes que han contratado servicio garantizado han de ser servidos
-        for (int id = 0; id < state.length; ++id)
-            if (clientes.get(id).getContrato() == GARANTIZADO && state[id] == -1)
-                return false;
-        return true;
-    }
 
     public boolean isCorrect() {
-        //Un cliente solo se asigna una central
-        // Por construccion, se satisface
-
-        //A los clientes se les sirve siempre completamente
-        // Se puede suponer que si sucede y solo comprobar que no se sobrepasa la produccion
-
-        //Todos los clientes que han contratado servicio garantizado han de ser servidos
-        if (!allGarantizados()) return false;
-
-        //No se puede asignar a una central mas demanda de la que puede producir
         double[] demanda = new double[centrales.size()];
         double[] maxProduccion = new double[centrales.size()];
         for (int id = 0; id < centrales.size(); ++id) {
@@ -195,7 +132,6 @@ public class CentralsBoard {
             demanda[centId] += clientes.get(id).getConsumo()/(1-perdida(id,centId));
             if (demanda[centId] > maxProduccion[centId]) return false;
         }
-
         return true;
     }
 
@@ -209,10 +145,9 @@ public class CentralsBoard {
     }
 
     ////// Auxiliares
-
     // Pre: clId es el identificador de un cliente
     //    centId es el identificador de una central
-    private double distance(int clId, int centId) {
+    public static double distance(int clId, int centId) {
         Cliente cliente = clientes.get(clId);
         Central central = centrales.get(centId);
         double dx = cliente.getCoordX()-central.getCoordX();
@@ -222,12 +157,12 @@ public class CentralsBoard {
 
     // Pre: clId es el identificador de un cliente
     //    centId es el identificador de una central
-    private double perdida(int clId, int centId) {
+    public static double perdida(int clId, int centId) {
         return VEnergia.getPerdida(distance(clId, centId));
     }
 
     // Pre: centId es el identificador de una central
-    private double costeMarcha(int centId) {
+    public static double costeMarcha(int centId) {
         Central central = centrales.get(centId);
         try {
             return VEnergia.getCosteMarcha(central.getTipo()) + VEnergia.getCosteProduccionMW(central.getTipo())*central.getProduccion();
@@ -238,7 +173,7 @@ public class CentralsBoard {
     }
 
     // Pre: centId es el identificador de una central
-    private double costeParada(int centId) {
+    public static double costeParada(int centId) {
         Central central = centrales.get(centId);
         try{
             return VEnergia.getCosteParada(central.getTipo());
@@ -249,7 +184,7 @@ public class CentralsBoard {
     }
 
     // Pre: clId es el identificador de un cliente
-    private double precioTarifa(int clId) {
+    public static double precioTarifa(int clId) {
         Cliente cliente = clientes.get(clId);
         try {
             if (cliente.getTipo() == GARANTIZADO) {
@@ -286,5 +221,42 @@ public class CentralsBoard {
         for (int stat: state) {
             System.out.print(' ' + String.valueOf(stat));
         }
+    }
+
+    public int[] getState() {
+        return state.clone();
+    }
+
+    public double getGanancia() {
+        double ganancia = 0;
+        //Centrales
+        double[] suministro = new double[centrales.size()];
+        for(int i = 0; i < suministro.length; ++i) {
+            suministro[i] = 0.0;
+        }
+        for (int id = 0; id < state.length; ++id) {
+            if (state[id] != -1)
+                try {
+                    suministro[state[id]] += clientes.get(id).getConsumo() / (1 - perdida(id, state[id]));
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+        }
+        for (int jd = 0; jd < centrales.size(); ++jd) {
+            if (suministro[jd] > 0) ganancia -= costeMarcha(jd);
+            else ganancia -= costeParada(jd);
+        }
+
+        //Clientes
+        for (int id = 0; id < state.length; ++id) {
+            try{
+                if (state[id] != -1) ganancia += precioTarifa(id);
+                else ganancia -= VEnergia.getTarifaClientePenalizacion(clientes.get(id).getContrato())*clientes.get(id).getConsumo();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        return ganancia;
     }
 }

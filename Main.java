@@ -1,6 +1,7 @@
 import Centrals.CentralsBoard;
 import Centrals.CentralsGoalTest;
 import Centrals.CentralsHeuristicFunction;
+import Centrals.CentralsHeuristicFunction1;
 import Centrals.CentralsSuccessorFunction;
 import IA.Energia.Centrales;
 import IA.Energia.Clientes;
@@ -25,7 +26,7 @@ public class Main {
             Problem p = new Problem(centralsBoard,
                                     new CentralsSuccessorFunction(),
                                     new CentralsGoalTest(),
-                                    new CentralsHeuristicFunction());
+                                    new CentralsHeuristicFunction1());
             Search search = new HillClimbingSearch();
             SearchAgent agent = new SearchAgent(p, search);
 
