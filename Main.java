@@ -4,11 +4,9 @@ import Centrals.CentralsHeuristicFunction;
 import Centrals.CentralsSuccessorFunction;
 import IA.Energia.Centrales;
 import IA.Energia.Clientes;
-import aima.search.framework.GraphSearch;
 import aima.search.framework.Problem;
 import aima.search.framework.Search;
 import aima.search.framework.SearchAgent;
-import aima.search.informed.AStarSearch;
 import aima.search.informed.HillClimbingSearch;
 
 import java.util.Iterator;
@@ -23,7 +21,7 @@ public class Main {
             Centrales c = new Centrales(param, 4);
             double[] propc = new double[]{0.2D, 0.3D, 0.5D};
             Clientes cl = new Clientes(1000, propc, 0.5D, 1);
-            CentralsBoard centralsBoard = new CentralsBoard(c,cl,1);
+            CentralsBoard centralsBoard = new CentralsBoard(c,cl,2);
             Problem p = new Problem(centralsBoard,
                                     new CentralsSuccessorFunction(),
                                     new CentralsGoalTest(),
