@@ -1,1 +1,1 @@
-java -cp AIMA.jar:CentralEnergia.jar:. Main
+java -cp AIMA.jar:CentralEnergia.jar:. Main -Xmx

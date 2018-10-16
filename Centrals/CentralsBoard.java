@@ -227,6 +227,10 @@ public class CentralsBoard {
         return state.clone();
     }
 
+    public int getState(int jd) {
+        return state[jd];
+    }
+
     public double getGanancia() {
         double ganancia = 0;
         //Centrales
