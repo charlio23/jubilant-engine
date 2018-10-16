@@ -17,18 +17,29 @@ public class CentralsBoard {
     public static final int GARANTIZADO = 0;
     public static final int NOGARANTIZADO = 1;
 
-    public static final int RANDOM = 0;
-    public static final int DISTANCE = 1;
-    public static final int FUZZY = 2;
 
-    public static final double MAXBENEFIT = 200000;
+    public static final int ONE = 0;
+    public static final int RANDOM1 = 1;
+    public static final int RANDOM2 = 2;
+    public static final int DISTANCE1 = 3;
+    public static final int DISTANCE2 = 4;
+    public static final int FUZZY = 5;
+
+    public static final double MAXBENEFIT = 50000;
 
     public CentralsBoard(Centrales centrales, Clientes clientes, int estrategia) {
         this.centrales = centrales;
         this.clientes = clientes;
         this.state = new int[clientes.size()];
 
-        if (estrategia == RANDOM) {
+        if (estrategia == ONE) {
+            // Se asigna una central a todos los clientes
+            Random r = new Random();
+            int cnt = r.nextInt(centrales.size());
+            for (int id = 0; id < state.length; ++id)
+                state[id] = cnt;
+        }
+        if (estrategia == RANDOM1) {
             // Se asignan centrales a clientes garantizados de forma random
             Random r = new Random();
             for (int id = 0; id < state.length; ++id) {
@@ -39,7 +50,13 @@ public class CentralsBoard {
                 }
             }
         }
-        if(estrategia == DISTANCE) {
+        if (estrategia == RANDOM2) {
+            // Se asignan centrales a clientes de forma random
+            Random r = new Random();
+            for (int id = 0; id < state.length; ++id)
+                state[id] = r.nextInt(centrales.size());
+        }
+        if(estrategia == DISTANCE1) {
             // Se asigna la central mas proxima a cada cliente garantizado
             for (int id = 0; id < state.length; ++id) {
                 int centId = -1;
@@ -51,6 +68,21 @@ public class CentralsBoard {
                             minDis = auxDis;
                             centId = jd;
                         }
+                    }
+                }
+                state[id] = centId;
+            }
+        }
+        if(estrategia == DISTANCE2) {
+            // Se asigna la central mas proxima a cada cliente
+            for (int id = 0; id < state.length; ++id) {
+                int centId = -1;
+                double minDis = 150; // maxima es 100*sqrt(2)
+                for (int jd = 0; jd < centrales.size(); ++jd) {
+                    double auxDis = distance(id, jd);
+                    if (auxDis < minDis) {
+                        minDis = auxDis;
+                        centId = jd;
                     }
                 }
                 state[id] = centId;
@@ -121,7 +153,7 @@ public class CentralsBoard {
 
         for(int jd = 0; jd < centrales.size(); ++jd) {
             double overflow = Math.max(0.0, suministro[jd] - centrales.get(jd).getProduccion());
-            ganancia -= overflow * overflow * MAXBENEFIT;
+            ganancia -= overflow * overflow * MAXBENEFIT*centrales.size();
         }
 
         return -ganancia;

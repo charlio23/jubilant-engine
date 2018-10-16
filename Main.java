@@ -1,4 +1,3 @@
-import Centrals.CentralsBoard;
 import Centrals.CentralsGoalTest;
 import Centrals.CentralsHeuristicFunction;
 import Centrals.CentralsSuccessorFunction;
