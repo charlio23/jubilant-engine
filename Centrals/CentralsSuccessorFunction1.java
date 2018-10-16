@@ -5,7 +5,7 @@ import aima.search.framework.SuccessorFunction;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CentralsSuccessorFunction implements SuccessorFunction {
+public class CentralsSuccessorFunction1 extends AbsCentralsSuccessorFunction {
 
     public List getSuccessors(Object o) {
         CentralsBoard board = (CentralsBoard) o;
