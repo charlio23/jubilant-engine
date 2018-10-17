@@ -231,6 +231,14 @@ public class CentralsBoard {
         return state[jd];
     }
 
+    public double getConsumo(int id) {
+        return clientes.get(id).getConsumo();
+    }
+
+    public double getProduccion(int jd) {
+        return centrales.get(jd).getProduccion();
+    }    
+
     public double getGanancia() {
         double ganancia = 0;
         //Centrales
