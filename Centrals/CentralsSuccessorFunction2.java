@@ -22,39 +22,35 @@ public class CentralsSuccessorFunction2 extends AbsCentralsSuccessorFunction {
             else jd = -1;
             for (; jd < board.getCentralesSize(); ++jd) {
                 CentralsBoard newBoard = board.getCopy();
-                if (newBoard.changeCentral(id, jd)) {
+                if (newBoard.setCentral(id, jd)) {
                     successors.add(new Successor(id + " + " + jd, newBoard));
                 }
             }
         }
         for (int id = 0; id < board.getClientesSize(); ++id) {
-            Random rnd = new Random();
+            Random rnd = new Random(board.SEED);
             int j1 = board.getState(id);
             if(j1 != -1) {
                 for(int k = 0; k < 10; ++k) {
                     int id2 = rnd.nextInt(board.getClientesSize());
                     if(id != id2) {
                         CentralsBoard newBoard = board.getCopy();
-                        int j2 = board.getState(id2);
-                        if(j1 != j2 && j2 != -1) {
-                            if (newBoard.changeCentral(id2, j1) && newBoard.changeCentral(id, j2)) {
-                                successors.add(new Successor(id + " <=> " + id2, newBoard));
-                            }
+                        if (newBoard.swapCentral(id,id2)) {
+                            successors.add(new Successor(id + " <=> " + id2, newBoard));
                         }
                     }
                 }
             }
         }
         for (int id = 0; id < board.getClientesSize(); ++id) {
-            Random rnd = new Random();
+            Random rnd = new Random(board.SEED);
             int j1 = board.getState(id);
             if(j1 != -1) {
                 for(int k = 0; k < 100; ++k) {
                     int id2 = rnd.nextInt(board.getClientesSize());
-                    int j2 = board.getState(id2);
                     if(id != id2) {
                         CentralsBoard newBoard = board.getCopy();
-                        if (newBoard.changeCentral(id2, j1) && newBoard.changeCentral(id, -1)) {
+                        if (newBoard.substituteClient(id, id2)) {
                             successors.add(new Successor(id + " <= " + id2, newBoard));
                         }
                     }

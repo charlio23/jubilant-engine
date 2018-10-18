@@ -21,7 +21,7 @@ public class CentralsSuccessorFunction1 extends AbsCentralsSuccessorFunction {
             else jd = -1;
             for (; jd < board.getCentralesSize(); ++jd) {
                 CentralsBoard newBoard = board.getCopy();
-                if (newBoard.changeCentral(id, jd)) {
+                if (newBoard.setCentral(id, jd)) {
                     successors.add(new Successor(id + " + " + jd, newBoard));
                 }
             }

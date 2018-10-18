@@ -24,22 +24,24 @@ public class CentralsBoard {
     public static final int DISTANCE2 = 4;
     public static final int FUZZY = 5;
 
+    public static int SEED;
 
-    public CentralsBoard(Centrales centrales, Clientes clientes, int estrategia) {
+    public CentralsBoard(Centrales centrales, Clientes clientes, int estrategia, int seed) {
         this.centrales = centrales;
         this.clientes = clientes;
         this.state = new int[clientes.size()];
+        SEED = seed;
 
         if (estrategia == ONE) {
             // Se asigna una central a todos los clientes
-            Random r = new Random();
+            Random r = new Random(SEED);
             int cnt = r.nextInt(centrales.size());
             for (int id = 0; id < state.length; ++id)
                 state[id] = cnt;
         }
         if (estrategia == RANDOM1) {
             // Se asignan centrales a clientes garantizados de forma random
-            Random r = new Random();
+            Random r = new Random(SEED);
             for (int id = 0; id < state.length; ++id) {
                 if (clientes.get(id).getContrato() == GARANTIZADO) {
                     state[id] = r.nextInt(centrales.size());
@@ -50,7 +52,7 @@ public class CentralsBoard {
         }
         if (estrategia == RANDOM2) {
             // Se asignan centrales a clientes de forma random
-            Random r = new Random();
+            Random r = new Random(SEED);
             for (int id = 0; id < state.length; ++id)
                 state[id] = r.nextInt(centrales.size());
         }
@@ -87,6 +89,7 @@ public class CentralsBoard {
             }
         }
         if(estrategia == FUZZY) {
+            Random r = new Random(SEED);
             for(int id = 0; id < state.length; ++id) {
                 double cand[] = new double[centrales.size()];
                 double cumChance = 0;
@@ -97,7 +100,7 @@ public class CentralsBoard {
                     cand[jd] = cumChance;
                     //Maybe consider existing assignments
                 }
-                double frand = Math.random()*cumChance;
+                double frand = r.nextDouble() * cumChance;
                 state[id] = -1;
                 for(int jd = 0; state[id] == -1 && jd < centrales.size(); ++jd) {
                     if(cand[jd] > frand) state[id] = jd;
@@ -106,7 +109,7 @@ public class CentralsBoard {
         }
     }
 
-    public CentralsBoard(int numCentrales, int[] pCentrales, int numClientes, int[] pClientes, int estrategia) {
+    public CentralsBoard(int numCentrales, int[] pCentrales, int numClientes, int[] pClientes, int estrategia,int seed) {
         state = new int[clientes.size()];
         //centrales = new Centrales(numCentrales);
 
@@ -114,10 +117,6 @@ public class CentralsBoard {
 
     private CentralsBoard() {
     }
-
-    //TODO: Change heuristic funtion to reflect penalizations
-
-
 
     public boolean isCorrect() {
         double[] demanda = new double[centrales.size()];
@@ -135,11 +134,33 @@ public class CentralsBoard {
         return true;
     }
 
+    //OPERADORES
+
     //Pre: centId puede ser -1 sii Cliente clId no es garantizado
-    public boolean changeCentral(int clId, int centId) {
+    public boolean setCentral(int clId, int centId) {
         if (clientes.get(clId).getContrato() == NOGARANTIZADO || centId != -1){
             state[clId] = centId;
             return true;
+        }
+        return false;
+    }
+
+    public boolean swapCentral(int clId1, int clId2) {
+        int cen1 = state[clId1];
+        int cen2 = state[clId2];
+        if(setCentral(clId1, cen2)) {
+            if(setCentral(clId2,cen1)) return true;
+            setCentral(clId1,cen1);
+        }
+        return false;
+    }
+
+    public boolean substituteClient(int clId1, int clId2) {
+        int cen1 = state[clId1];
+        int cen2 = state[clId2];
+        if(setCentral(clId2, cen1)) {
+            if(setCentral(clId1, -1)) return true;
+            setCentral(clId2, cen2);
         }
         return false;
     }
@@ -238,7 +259,7 @@ public class CentralsBoard {
 
     public double getProduccion(int jd) {
         return centrales.get(jd).getProduccion();
-    }    
+    }
 
     public double getGanancia() {
         double ganancia = 0;

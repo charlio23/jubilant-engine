@@ -20,11 +20,15 @@ public class Main {
 
     public static void main(String[] args) {
         try {
+            final int Seed = 1234;
+
+
             int[] param = new int[]{5, 10, 25};
             Centrales c = new Centrales(param, 4);
             double[] propc = new double[]{0.2D, 0.3D, 0.5D};
             Clientes cl = new Clientes(1000,propc, 0.5D, 1);
-            CentralsBoard centralsBoard = new CentralsBoard(c,cl,CentralsBoard.FUZZY);
+
+            CentralsBoard centralsBoard = new CentralsBoard(c, cl, CentralsBoard.FUZZY, Seed);
             Problem p = new Problem(centralsBoard,
                                     new CentralsSuccessorFunction2(),
                                     new CentralsGoalTest(),
