@@ -35,6 +35,12 @@ public class Main {
             System.out.println();
             printActions(agent.getActions());
             printInstrumentation(agent.getInstrumentation());
+            CentralsBoard finalState = (CentralsBoard) search.getGoalState();
+            finalState.printState();
+            if (finalState.isCorrect()) System.out.println("Estat Correcte");
+            else System.out.println("Rop");
+            System.out.print("Ganancia: ");
+            System.out.println(centralsBoard.getGanancia());
 
         } catch (Exception e) {
             e.printStackTrace();

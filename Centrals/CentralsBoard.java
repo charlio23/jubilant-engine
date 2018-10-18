@@ -221,6 +221,7 @@ public class CentralsBoard {
         for (int stat: state) {
             System.out.print(' ' + String.valueOf(stat));
         }
+        System.out.println();
     }
 
     public int[] getState() {
