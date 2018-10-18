@@ -40,7 +40,7 @@ public class Main {
             Problem p = new Problem(centralsBoard,
                                     new CentralsSuccessorFunction6(),
                                     new CentralsGoalTest(),
-                                    new CentralsHeuristicFunction5());
+                                    new CentralsHeuristicFunction4());
             Search search = new HillClimbingSearch();
             SearchAgent agent = new SearchAgent(p, search);
 

@@ -24,7 +24,7 @@ public class CentralsBoard {
     public static final int DISTANCE1 = 3;
     public static final int DISTANCE2 = 4;
     public static final int FUZZY = 5;
-    public static final int FUZZY2 = 5;
+    public static final int FUZZY2 = 6;
 
     public static int SEED;
 
@@ -130,22 +130,26 @@ public class CentralsBoard {
         if(estrategia == FUZZY2) {
             Random r = new Random(SEED);
             for(int id = 0; id < state.length; ++id) {
-                double cand[] = new double[centrales.size()];
-                double cumChance = 0;
-                for(int jd = 0; jd < centrales.size(); ++jd) {
-                    double reach = 1-perdida(id, jd);
-                    double power = centrales.get(jd).getProduccion()/clientes.get(id).getConsumo();
-                    cumChance += reach*reach*power;
-                    cand[jd] = cumChance;
-                }
-                double frand = r.nextDouble() * cumChance;
-                state[id] = -1;
-                for(int jd = 0; state[id] == -1 && jd < centrales.size(); ++jd) {
-                    if(cand[jd] > frand) state[id] = jd;
+                if(isGuaranteed(id)) {
+                    double cand[] = new double[centrales.size()];
+                    double cumChance = 0;
+                    for(int jd = 0; jd < centrales.size(); ++jd) {
+                        double reach = 1-perdida(id, jd);
+                        double power = centrales.get(jd).getProduccion();
+                        cumChance += reach*reach*power;
+                        cand[jd] = cumChance;
+                        //Maybe consider existing assignments
+                    }
+                    double frand = r.nextDouble() * cumChance;
+                    state[id] = -1;
+                    for(int jd = 0; state[id] == -1 && jd < centrales.size(); ++jd) {
+                        if(cand[jd] > frand) state[id] = jd;
+                    }
                 }
             }
         }
     }
+
     public boolean isCorrect() {
         double[] demanda = new double[centrales.size()];
         double[] maxProduccion = new double[centrales.size()];
@@ -358,6 +362,45 @@ public class CentralsBoard {
         int[] ans = new int[cnt];
         cnt = 0;
         for(int jd = 0; jd < centrales.size(); ++jd) if(demanda[jd] > maxProduccion[jd]) ans[cnt++] = jd;
+        return ans;
+    }
+
+    public int[] getSaturatedClients() {
+        double[] demanda = new double[centrales.size()];
+        double[] maxProduccion = new double[centrales.size()];
+        for (int id = 0; id < centrales.size(); ++id) {
+            demanda[id] = 0;
+            maxProduccion[id] = centrales.get(id).getProduccion();
+        }
+        for (int id = 0; id < state.length; ++id) {
+            int centId = state[id];
+            if (centId == -1) continue;
+            demanda[centId] += clientes.get(id).getConsumo()/(1-perdida(id,centId));
+        }
+        int cnt = 0;
+        for (int id = 0; id < state.length; ++id) if(state[id] != -1 && demanda[state[id]] > maxProduccion[state[id]]) cnt++;
+        int[] ans = new int[cnt];
+        cnt = 0;
+        for(int id = 0; id < state.length; ++id) if(state[id] != -1 && demanda[state[id]] > maxProduccion[state[id]]) ans[cnt++] = id;
+        return ans;
+    }
+    public int[] getNonSaturatedClients() {
+        double[] demanda = new double[centrales.size()];
+        double[] maxProduccion = new double[centrales.size()];
+        for (int id = 0; id < centrales.size(); ++id) {
+            demanda[id] = 0;
+            maxProduccion[id] = centrales.get(id).getProduccion();
+        }
+        for (int id = 0; id < state.length; ++id) {
+            int centId = state[id];
+            if (centId == -1) continue;
+            demanda[centId] += clientes.get(id).getConsumo()/(1-perdida(id,centId));
+        }
+        int cnt = 0;
+        for (int id = 0; id < state.length; ++id) if(state[id] != -1 && demanda[state[id]] < maxProduccion[state[id]]) cnt++;
+        int[] ans = new int[cnt];
+        cnt = 0;
+        for(int id = 0; id < state.length; ++id) if(state[id] != -1 && demanda[state[id]] < maxProduccion[state[id]]) ans[cnt++] = id;
         return ans;
     }
 }
