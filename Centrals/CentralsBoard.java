@@ -32,7 +32,25 @@ public class CentralsBoard {
         this.clientes = clientes;
         this.state = new int[clientes.size()];
         SEED = seed;
+        initialize(estrategia);
+    }
 
+    public CentralsBoard(int[] pCentrales, int numClientes, double[] pClientes, double propg, int estrategia,int seed) {
+        try {
+        state = new int[clientes.size()];
+        clientes = new Clientes(numClientes, pClientes, propg, seed);
+        centrales = new Centrales(pCentrales, seed);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        SEED = seed;
+        initialize(estrategia);
+    }
+
+    private CentralsBoard() {
+    }
+
+    private void initialize(int estrategia) {
         if (estrategia == ONE) {
             // Se asigna una central a todos los clientes
             Random r = new Random(SEED);
@@ -109,16 +127,6 @@ public class CentralsBoard {
             }
         }
     }
-
-    public CentralsBoard(int numCentrales, int[] pCentrales, int numClientes, int[] pClientes, int estrategia,int seed) {
-        state = new int[clientes.size()];
-        //centrales = new Centrales(numCentrales);
-
-    }
-
-    private CentralsBoard() {
-    }
-
     public boolean isCorrect() {
         double[] demanda = new double[centrales.size()];
         double[] maxProduccion = new double[centrales.size()];
