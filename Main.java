@@ -2,6 +2,7 @@ import Centrals.CentralsBoard;
 import Centrals.CentralsGoalTest;
 //import Centrals.CentralsHeuristicFunction;
 import Centrals.CentralsHeuristicFunction1;
+import Centrals.CentralsHeuristicFunction2;
 //import Centrals.CentralsSuccessorFunction;
 import Centrals.CentralsSuccessorFunction1;
 import Centrals.CentralsSuccessorFunction2;
@@ -26,7 +27,7 @@ public class Main {
             int[] param = new int[]{5, 10, 25};
             Centrales c = new Centrales(param, 4);
             double[] propc = new double[]{0.2D, 0.3D, 0.5D};
-            Clientes cl = new Clientes(1000,propc, 0.5D, 1);
+            Clientes cl = new Clientes(500,propc, 0.5D, 1);
 
             CentralsBoard centralsBoard = new CentralsBoard(c, cl, CentralsBoard.FUZZY, Seed);
             Problem p = new Problem(centralsBoard,
@@ -44,7 +45,7 @@ public class Main {
             if (finalState.isCorrect()) System.out.println("Estat Correcte");
             else System.out.println("Rop");
             System.out.print("Ganancia: ");
-            System.out.println(centralsBoard.getGanancia());
+            System.out.println(finalState.getGanancia());
 
         } catch (Exception e) {
             e.printStackTrace();
