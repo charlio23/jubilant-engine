@@ -21,8 +21,8 @@ public class CentralsSuccessorFunction3 extends AbsCentralsSuccessorFunction {
         //board.printState();
         if (board.isCorrect ()) {
             //System.out.println();
-            //System.out.println(String.valueOf(board.getGanancia()));
-        }				//else System.out.print("ROP + ");
+            System.out.println(String.valueOf(board.getGanancia()));
+        }				else System.out.println("ROP");
 
         for (int id = 0; id < board.getClientesSize (); ++id) {
             int jd;
