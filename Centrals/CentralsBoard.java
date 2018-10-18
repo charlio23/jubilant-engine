@@ -24,6 +24,7 @@ public class CentralsBoard {
     public static final int DISTANCE1 = 3;
     public static final int DISTANCE2 = 4;
     public static final int FUZZY = 5;
+    public static final int FUZZY2 = 5;
 
     public static int SEED;
 
@@ -118,6 +119,24 @@ public class CentralsBoard {
                     cumChance += reach*reach*power;
                     cand[jd] = cumChance;
                     //Maybe consider existing assignments
+                }
+                double frand = r.nextDouble() * cumChance;
+                state[id] = -1;
+                for(int jd = 0; state[id] == -1 && jd < centrales.size(); ++jd) {
+                    if(cand[jd] > frand) state[id] = jd;
+                }
+            }
+        }
+        if(estrategia == FUZZY2) {
+            Random r = new Random(SEED);
+            for(int id = 0; id < state.length; ++id) {
+                double cand[] = new double[centrales.size()];
+                double cumChance = 0;
+                for(int jd = 0; jd < centrales.size(); ++jd) {
+                    double reach = 1-perdida(id, jd);
+                    double power = centrales.get(jd).getProduccion()/clientes.get(id).getConsumo();
+                    cumChance += reach*reach*power;
+                    cand[jd] = cumChance;
                 }
                 double frand = r.nextDouble() * cumChance;
                 state[id] = -1;
