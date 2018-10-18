@@ -7,6 +7,7 @@ import IA.Energia.Cliente;
 import IA.Energia.VEnergia;
 
 import java.util.Random;
+import java.util.ArrayList;
 
 public class CentralsBoard {
 
@@ -292,5 +293,44 @@ public class CentralsBoard {
             }
         }
         return ganancia;
+    }
+
+    public int[] getNonSaturatedCentrals() {
+        double[] demanda = new double[centrales.size()];
+        double[] maxProduccion = new double[centrales.size()];
+        for (int id = 0; id < centrales.size(); ++id) {
+            demanda[id] = 0;
+            maxProduccion[id] = centrales.get(id).getProduccion();
+        }
+        for (int id = 0; id < state.length; ++id) {
+            int centId = state[id];
+            if (centId == -1) continue;
+            demanda[centId] += clientes.get(id).getConsumo()/(1-perdida(id,centId));
+        }
+        int cnt = 0;
+        for (int jd = 0; jd < centrales.size(); ++jd) if(demanda[jd] <= maxProduccion[jd]) cnt++;
+        int[] ans = new int[cnt];
+        cnt = 0;
+        for(int jd = 0; jd < centrales.size(); ++jd) if(demanda[jd] <= maxProduccion[jd]) ans[cnt++] = jd;
+        return ans;
+    }
+    public int[] getSaturatedCentrals() {
+        double[] demanda = new double[centrales.size()];
+        double[] maxProduccion = new double[centrales.size()];
+        for (int id = 0; id < centrales.size(); ++id) {
+            demanda[id] = 0;
+            maxProduccion[id] = centrales.get(id).getProduccion();
+        }
+        for (int id = 0; id < state.length; ++id) {
+            int centId = state[id];
+            if (centId == -1) continue;
+            demanda[centId] += clientes.get(id).getConsumo()/(1-perdida(id,centId));
+        }
+        int cnt = 0;
+        for (int jd = 0; jd < centrales.size(); ++jd) if(demanda[jd] > maxProduccion[jd]) cnt++;
+        int[] ans = new int[cnt];
+        cnt = 0;
+        for(int jd = 0; jd < centrales.size(); ++jd) if(demanda[jd] > maxProduccion[jd]) ans[cnt++] = jd;
+        return ans;
     }
 }
