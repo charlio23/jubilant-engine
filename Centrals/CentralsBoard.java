@@ -26,6 +26,8 @@ public class CentralsBoard {
     public static final int FUZZY = 5;
     public static final int FUZZY2 = 6;
 
+    public static final int NUMINICIO = 7;
+
     public static int SEED;
 
     public CentralsBoard(Centrales centrales, Clientes clientes, int estrategia, int seed) {
@@ -403,4 +405,24 @@ public class CentralsBoard {
         for(int id = 0; id < state.length; ++id) if(state[id] != -1 && demanda[state[id]] < maxProduccion[state[id]]) ans[cnt++] = id;
         return ans;
     }
+    
+    public double[] getPercentUsedCentrals() {
+		double[] percent = new double[3];
+		int[] tipoCentral = new int[3];
+		boolean[] centralesEnMarcha = new boolean[centrales.size()];
+		for (int id = 0; id < state.length; ++id) {
+			int centId = state[id];
+			if (centId != -1 && !centralesEnMarcha[centId]) {
+				Central central = centrales.get(id);
+				percent[central.getTipo()]++;
+				tipoCentral[central.getTipo()]++;
+				centralesEnMarcha[centId] = true;
+			}
+		}
+		
+		for (int i = 0; i < percent.length; ++i)
+			percent[i] /= tipoCentral[i];
+				
+		return percent;
+	}
 }
