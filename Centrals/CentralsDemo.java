@@ -23,7 +23,7 @@ import java.util.ArrayList;
 public class CentralsDemo {
     public static void printMainMenu(){
         System.out.println("Escoger grupo de ejecuciones");
-    //    System.out.println("1- Grupo 1: Compara operadores");
+        System.out.println("1- Grupo 1: Compara operadores");
         System.out.println("2- Grupo 2: Compara soluciones iniciales");
         System.out.println("3- Grupo 3: Experimentos para hallar parametros de SA");
         System.out.println("4- Grupo 4: HC para valores crecientes");
@@ -32,6 +32,77 @@ public class CentralsDemo {
         System.out.println("0- Fin");
     }
     
+
+	public static void grupo1Menu(Scanner sc) {
+        System.out.println("Escoger ejecuciones de Heuristica vs Sucesores");
+        System.out.println("1- Ronda corta: nClientes = 500, todos con todos");		
+        System.out.println("0- Atras");
+        int option = sc.nextInt();
+        sc.nextLine();
+        switch (option) {
+			case 1:
+				subgrupo1Corta();
+                System.out.println("");
+                break;
+            case 0:
+				break;
+            default:
+                System.out.println("Opción inválida. Has escrito " + option);
+				
+				grupo2Menu(sc);
+		}
+	}
+	
+	private static void subgrupo1Corta() {
+		try {
+			System.out.println("heuristica sucesors execTime correct");
+			int repeticiones = 5;
+			int[] param = new int[]{5, 10, 25};
+			double[] propc = new double[]{0.2D, 0.3D, 0.5D};
+			Random r = new Random();			
+            
+            int[] seeds = new int[repeticiones];
+            for (int i = 0; i < repeticiones; ++i) seeds[i] = r.nextInt(1729);
+            
+            for (int h = 1; h <= 5; ++h) {
+				for (int s = 1; s <= 6; ++s) {
+					double sumExecTime = 0;
+					double sumGanancias = 0;
+					boolean correct = true;
+					
+					double[] meanPercent = new double[3];
+					for (int z = 0; z < repeticiones; ++z) {
+						int seed = seeds[z];
+						Centrales c = new Centrales(param, seed);					
+						Clientes cl = new Clientes(1000, propc, 0.5D, seed);   			
+						CentralsBoard centralsBoard = new CentralsBoard(c, cl, CentralsBoard.FUZZY, seed);
+						Problem p = new Problem(centralsBoard,
+												new CentralsSuccessorFunction6(),
+												new CentralsGoalTest(),
+												new CentralsHeuristicFunction4());
+						long startTime = System.currentTimeMillis();
+						HillClimbingSearch search = new HillClimbingSearch();
+						SearchAgent agent = new SearchAgent(p, search);
+						long endTime = System.currentTimeMillis();
+						long execTime = endTime - startTime;
+						
+						CentralsBoard finalState = (CentralsBoard) search.getGoalState();
+						sumExecTime += execTime;
+						sumGanancias += finalState.getGanancia();
+						correct &= finalState.isCorrect();
+						if (!correct) z = repeticiones;						
+					}
+					
+					System.out.println(h + " " + s + " " + sumGanancias/repeticiones + " " + " " + sumExecTime/repeticiones + " " + correct + " ");
+				}
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}		
+	}
+
+
 
 	public static void grupo2Menu(Scanner sc) {
         System.out.println("Escoger ejecuciones");
@@ -621,6 +692,9 @@ public class CentralsDemo {
 				int option = sc.nextInt();
 				sc.nextLine();
 				switch (option) {
+					case 1:
+						grupo1Menu(sc);
+						break;
 					case 2:
 						grupo2Menu(sc);
 						break;
