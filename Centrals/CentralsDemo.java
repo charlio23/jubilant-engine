@@ -64,38 +64,805 @@ public class CentralsDemo {
             int[] seeds = new int[repeticiones];
             for (int i = 0; i < repeticiones; ++i) seeds[i] = r.nextInt(1729);
             
-            for (int h = 1; h <= 5; ++h) {
-				for (int s = 1; s <= 6; ++s) {
-					double sumExecTime = 0;
-					double sumGanancias = 0;
-					boolean correct = true;
-					
-					double[] meanPercent = new double[3];
-					for (int z = 0; z < repeticiones; ++z) {
-						int seed = seeds[z];
-						Centrales c = new Centrales(param, seed);					
-						Clientes cl = new Clientes(1000, propc, 0.5D, seed);   			
-						CentralsBoard centralsBoard = new CentralsBoard(c, cl, CentralsBoard.FUZZY, seed);
-						Problem p = new Problem(centralsBoard,
-												new CentralsSuccessorFunction6(),
-												new CentralsGoalTest(),
-												new CentralsHeuristicFunction4());
-						long startTime = System.currentTimeMillis();
-						HillClimbingSearch search = new HillClimbingSearch();
-						SearchAgent agent = new SearchAgent(p, search);
-						long endTime = System.currentTimeMillis();
-						long execTime = endTime - startTime;
+
+			double sumExecTime, sumGanancias;
+			boolean correct;
+			
+			// 1 1
+			sumExecTime = sumGanancias = 0;
+			correct = true;	
+			for (int z = 0; z < repeticiones; ++z) {
+				int seed = seeds[z];
+				Centrales c = new Centrales(param, seed);					
+				Clientes cl = new Clientes(1000, propc, 0.5D, seed);   			
+				CentralsBoard centralsBoard = new CentralsBoard(c, cl, CentralsBoard.FUZZY, seed);
+				Problem p = new Problem(centralsBoard,
+										new CentralsSuccessorFunction1(),
+										new CentralsGoalTest(),
+										new CentralsHeuristicFunction1());
+				long startTime = System.currentTimeMillis();
+				HillClimbingSearch search = new HillClimbingSearch();
+				SearchAgent agent = new SearchAgent(p, search);
+				long endTime = System.currentTimeMillis();
+				long execTime = endTime - startTime;
 						
-						CentralsBoard finalState = (CentralsBoard) search.getGoalState();
-						sumExecTime += execTime;
-						sumGanancias += finalState.getGanancia();
-						correct &= finalState.isCorrect();
-						if (!correct) z = repeticiones;						
-					}
-					
-					System.out.println(h + " " + s + " " + sumGanancias/repeticiones + " " + " " + sumExecTime/repeticiones + " " + correct + " ");
-				}
+				CentralsBoard finalState = (CentralsBoard) search.getGoalState();
+				sumExecTime += execTime;
+				sumGanancias += finalState.getGanancia();
+				correct &= finalState.isCorrect();
+				if (!correct) z = repeticiones;						
 			}
+			System.out.println(1 + " " + 1 + " " + sumGanancias/repeticiones + " " + " " + sumExecTime/repeticiones + " " + correct + " ");
+			
+			// 1 2
+			sumExecTime = sumGanancias = 0;
+			correct = true;	
+			for (int z = 0; z < repeticiones; ++z) {
+				int seed = seeds[z];
+				Centrales c = new Centrales(param, seed);					
+				Clientes cl = new Clientes(1000, propc, 0.5D, seed);   			
+				CentralsBoard centralsBoard = new CentralsBoard(c, cl, CentralsBoard.FUZZY, seed);
+				Problem p = new Problem(centralsBoard,
+										new CentralsSuccessorFunction2(),
+										new CentralsGoalTest(),
+										new CentralsHeuristicFunction1());
+				long startTime = System.currentTimeMillis();
+				HillClimbingSearch search = new HillClimbingSearch();
+				SearchAgent agent = new SearchAgent(p, search);
+				long endTime = System.currentTimeMillis();
+				long execTime = endTime - startTime;
+						
+				CentralsBoard finalState = (CentralsBoard) search.getGoalState();
+				sumExecTime += execTime;
+				sumGanancias += finalState.getGanancia();
+				correct &= finalState.isCorrect();
+				if (!correct) z = repeticiones;						
+			}
+			System.out.println(1 + " " + 2 + " " + sumGanancias/repeticiones + " " + " " + sumExecTime/repeticiones + " " + correct + " ");
+			
+			// 1 3
+			sumExecTime = sumGanancias = 0;
+			correct = true;	
+			for (int z = 0; z < repeticiones; ++z) {
+				int seed = seeds[z];
+				Centrales c = new Centrales(param, seed);					
+				Clientes cl = new Clientes(1000, propc, 0.5D, seed);   			
+				CentralsBoard centralsBoard = new CentralsBoard(c, cl, CentralsBoard.FUZZY, seed);
+				Problem p = new Problem(centralsBoard,
+										new CentralsSuccessorFunction3(),
+										new CentralsGoalTest(),
+										new CentralsHeuristicFunction1());
+				long startTime = System.currentTimeMillis();
+				HillClimbingSearch search = new HillClimbingSearch();
+				SearchAgent agent = new SearchAgent(p, search);
+				long endTime = System.currentTimeMillis();
+				long execTime = endTime - startTime;
+						
+				CentralsBoard finalState = (CentralsBoard) search.getGoalState();
+				sumExecTime += execTime;
+				sumGanancias += finalState.getGanancia();
+				correct &= finalState.isCorrect();
+				if (!correct) z = repeticiones;						
+			}
+			System.out.println(1 + " " + 3 + " " + sumGanancias/repeticiones + " " + " " + sumExecTime/repeticiones + " " + correct + " ");
+			
+			// 1 4
+			sumExecTime = sumGanancias = 0;
+			correct = true;	
+			for (int z = 0; z < repeticiones; ++z) {
+				int seed = seeds[z];
+				Centrales c = new Centrales(param, seed);					
+				Clientes cl = new Clientes(1000, propc, 0.5D, seed);   			
+				CentralsBoard centralsBoard = new CentralsBoard(c, cl, CentralsBoard.FUZZY, seed);
+				Problem p = new Problem(centralsBoard,
+										new CentralsSuccessorFunction4(),
+										new CentralsGoalTest(),
+										new CentralsHeuristicFunction1());
+				long startTime = System.currentTimeMillis();
+				HillClimbingSearch search = new HillClimbingSearch();
+				SearchAgent agent = new SearchAgent(p, search);
+				long endTime = System.currentTimeMillis();
+				long execTime = endTime - startTime;
+						
+				CentralsBoard finalState = (CentralsBoard) search.getGoalState();
+				sumExecTime += execTime;
+				sumGanancias += finalState.getGanancia();
+				correct &= finalState.isCorrect();
+				if (!correct) z = repeticiones;						
+			}
+			System.out.println(1 + " " + 4 + " " + sumGanancias/repeticiones + " " + " " + sumExecTime/repeticiones + " " + correct + " ");
+			
+			// 1 5
+			sumExecTime = sumGanancias = 0;
+			correct = true;	
+			for (int z = 0; z < repeticiones; ++z) {
+				int seed = seeds[z];
+				Centrales c = new Centrales(param, seed);					
+				Clientes cl = new Clientes(1000, propc, 0.5D, seed);   			
+				CentralsBoard centralsBoard = new CentralsBoard(c, cl, CentralsBoard.FUZZY, seed);
+				Problem p = new Problem(centralsBoard,
+										new CentralsSuccessorFunction5(),
+										new CentralsGoalTest(),
+										new CentralsHeuristicFunction1());
+				long startTime = System.currentTimeMillis();
+				HillClimbingSearch search = new HillClimbingSearch();
+				SearchAgent agent = new SearchAgent(p, search);
+				long endTime = System.currentTimeMillis();
+				long execTime = endTime - startTime;
+						
+				CentralsBoard finalState = (CentralsBoard) search.getGoalState();
+				sumExecTime += execTime;
+				sumGanancias += finalState.getGanancia();
+				correct &= finalState.isCorrect();
+				if (!correct) z = repeticiones;						
+			}
+			System.out.println(1 + " " + 5 + " " + sumGanancias/repeticiones + " " + " " + sumExecTime/repeticiones + " " + correct + " ");
+			
+			// 1 6
+			sumExecTime = sumGanancias = 0;
+			correct = true;	
+			for (int z = 0; z < repeticiones; ++z) {
+				int seed = seeds[z];
+				Centrales c = new Centrales(param, seed);					
+				Clientes cl = new Clientes(1000, propc, 0.5D, seed);   			
+				CentralsBoard centralsBoard = new CentralsBoard(c, cl, CentralsBoard.FUZZY, seed);
+				Problem p = new Problem(centralsBoard,
+										new CentralsSuccessorFunction6(),
+										new CentralsGoalTest(),
+										new CentralsHeuristicFunction1());
+				long startTime = System.currentTimeMillis();
+				HillClimbingSearch search = new HillClimbingSearch();
+				SearchAgent agent = new SearchAgent(p, search);
+				long endTime = System.currentTimeMillis();
+				long execTime = endTime - startTime;
+						
+				CentralsBoard finalState = (CentralsBoard) search.getGoalState();
+				sumExecTime += execTime;
+				sumGanancias += finalState.getGanancia();
+				correct &= finalState.isCorrect();
+				if (!correct) z = repeticiones;						
+			}
+			System.out.println(1 + " " + 6 + " " + sumGanancias/repeticiones + " " + " " + sumExecTime/repeticiones + " " + correct + " ");
+			
+			
+			
+			
+			// 2 1
+			sumExecTime = sumGanancias = 0;
+			correct = true;	
+			for (int z = 0; z < repeticiones; ++z) {
+				int seed = seeds[z];
+				Centrales c = new Centrales(param, seed);					
+				Clientes cl = new Clientes(1000, propc, 0.5D, seed);   			
+				CentralsBoard centralsBoard = new CentralsBoard(c, cl, CentralsBoard.FUZZY, seed);
+				Problem p = new Problem(centralsBoard,
+										new CentralsSuccessorFunction1(),
+										new CentralsGoalTest(),
+										new CentralsHeuristicFunction2());
+				long startTime = System.currentTimeMillis();
+				HillClimbingSearch search = new HillClimbingSearch();
+				SearchAgent agent = new SearchAgent(p, search);
+				long endTime = System.currentTimeMillis();
+				long execTime = endTime - startTime;
+						
+				CentralsBoard finalState = (CentralsBoard) search.getGoalState();
+				sumExecTime += execTime;
+				sumGanancias += finalState.getGanancia();
+				correct &= finalState.isCorrect();
+				if (!correct) z = repeticiones;						
+			}
+			System.out.println(2 + " " + 1 + " " + sumGanancias/repeticiones + " " + " " + sumExecTime/repeticiones + " " + correct + " ");
+			
+			// 2 2
+			sumExecTime = sumGanancias = 0;
+			correct = true;	
+			for (int z = 0; z < repeticiones; ++z) {
+				int seed = seeds[z];
+				Centrales c = new Centrales(param, seed);					
+				Clientes cl = new Clientes(1000, propc, 0.5D, seed);   			
+				CentralsBoard centralsBoard = new CentralsBoard(c, cl, CentralsBoard.FUZZY, seed);
+				Problem p = new Problem(centralsBoard,
+										new CentralsSuccessorFunction2(),
+										new CentralsGoalTest(),
+										new CentralsHeuristicFunction2());
+				long startTime = System.currentTimeMillis();
+				HillClimbingSearch search = new HillClimbingSearch();
+				SearchAgent agent = new SearchAgent(p, search);
+				long endTime = System.currentTimeMillis();
+				long execTime = endTime - startTime;
+						
+				CentralsBoard finalState = (CentralsBoard) search.getGoalState();
+				sumExecTime += execTime;
+				sumGanancias += finalState.getGanancia();
+				correct &= finalState.isCorrect();
+				if (!correct) z = repeticiones;						
+			}
+			System.out.println(2 + " " + 2 + " " + sumGanancias/repeticiones + " " + " " + sumExecTime/repeticiones + " " + correct + " ");
+			
+			// 2 3
+			sumExecTime = sumGanancias = 0;
+			correct = true;	
+			for (int z = 0; z < repeticiones; ++z) {
+				int seed = seeds[z];
+				Centrales c = new Centrales(param, seed);					
+				Clientes cl = new Clientes(1000, propc, 0.5D, seed);   			
+				CentralsBoard centralsBoard = new CentralsBoard(c, cl, CentralsBoard.FUZZY, seed);
+				Problem p = new Problem(centralsBoard,
+										new CentralsSuccessorFunction3(),
+										new CentralsGoalTest(),
+										new CentralsHeuristicFunction2());
+				long startTime = System.currentTimeMillis();
+				HillClimbingSearch search = new HillClimbingSearch();
+				SearchAgent agent = new SearchAgent(p, search);
+				long endTime = System.currentTimeMillis();
+				long execTime = endTime - startTime;
+						
+				CentralsBoard finalState = (CentralsBoard) search.getGoalState();
+				sumExecTime += execTime;
+				sumGanancias += finalState.getGanancia();
+				correct &= finalState.isCorrect();
+				if (!correct) z = repeticiones;						
+			}
+			System.out.println(2 + " " + 3 + " " + sumGanancias/repeticiones + " " + " " + sumExecTime/repeticiones + " " + correct + " ");
+			
+			// 2 4
+			sumExecTime = sumGanancias = 0;
+			correct = true;	
+			for (int z = 0; z < repeticiones; ++z) {
+				int seed = seeds[z];
+				Centrales c = new Centrales(param, seed);					
+				Clientes cl = new Clientes(1000, propc, 0.5D, seed);   			
+				CentralsBoard centralsBoard = new CentralsBoard(c, cl, CentralsBoard.FUZZY, seed);
+				Problem p = new Problem(centralsBoard,
+										new CentralsSuccessorFunction4(),
+										new CentralsGoalTest(),
+										new CentralsHeuristicFunction2());
+				long startTime = System.currentTimeMillis();
+				HillClimbingSearch search = new HillClimbingSearch();
+				SearchAgent agent = new SearchAgent(p, search);
+				long endTime = System.currentTimeMillis();
+				long execTime = endTime - startTime;
+						
+				CentralsBoard finalState = (CentralsBoard) search.getGoalState();
+				sumExecTime += execTime;
+				sumGanancias += finalState.getGanancia();
+				correct &= finalState.isCorrect();
+				if (!correct) z = repeticiones;						
+			}
+			System.out.println(2 + " " + 4 + " " + sumGanancias/repeticiones + " " + " " + sumExecTime/repeticiones + " " + correct + " ");
+			
+			// 2 5
+			sumExecTime = sumGanancias = 0;
+			correct = true;	
+			for (int z = 0; z < repeticiones; ++z) {
+				int seed = seeds[z];
+				Centrales c = new Centrales(param, seed);					
+				Clientes cl = new Clientes(1000, propc, 0.5D, seed);   			
+				CentralsBoard centralsBoard = new CentralsBoard(c, cl, CentralsBoard.FUZZY, seed);
+				Problem p = new Problem(centralsBoard,
+										new CentralsSuccessorFunction5(),
+										new CentralsGoalTest(),
+										new CentralsHeuristicFunction2());
+				long startTime = System.currentTimeMillis();
+				HillClimbingSearch search = new HillClimbingSearch();
+				SearchAgent agent = new SearchAgent(p, search);
+				long endTime = System.currentTimeMillis();
+				long execTime = endTime - startTime;
+						
+				CentralsBoard finalState = (CentralsBoard) search.getGoalState();
+				sumExecTime += execTime;
+				sumGanancias += finalState.getGanancia();
+				correct &= finalState.isCorrect();
+				if (!correct) z = repeticiones;						
+			}
+			System.out.println(2 + " " + 5 + " " + sumGanancias/repeticiones + " " + " " + sumExecTime/repeticiones + " " + correct + " ");
+			
+			// 2 6
+			sumExecTime = sumGanancias = 0;
+			correct = true;	
+			for (int z = 0; z < repeticiones; ++z) {
+				int seed = seeds[z];
+				Centrales c = new Centrales(param, seed);					
+				Clientes cl = new Clientes(1000, propc, 0.5D, seed);   			
+				CentralsBoard centralsBoard = new CentralsBoard(c, cl, CentralsBoard.FUZZY, seed);
+				Problem p = new Problem(centralsBoard,
+										new CentralsSuccessorFunction6(),
+										new CentralsGoalTest(),
+										new CentralsHeuristicFunction2());
+				long startTime = System.currentTimeMillis();
+				HillClimbingSearch search = new HillClimbingSearch();
+				SearchAgent agent = new SearchAgent(p, search);
+				long endTime = System.currentTimeMillis();
+				long execTime = endTime - startTime;
+						
+				CentralsBoard finalState = (CentralsBoard) search.getGoalState();
+				sumExecTime += execTime;
+				sumGanancias += finalState.getGanancia();
+				correct &= finalState.isCorrect();
+				if (!correct) z = repeticiones;						
+			}
+			System.out.println(2 + " " + 6 + " " + sumGanancias/repeticiones + " " + " " + sumExecTime/repeticiones + " " + correct + " ");
+			
+			
+			
+			
+			// 3 1
+			sumExecTime = sumGanancias = 0;
+			correct = true;	
+			for (int z = 0; z < repeticiones; ++z) {
+				int seed = seeds[z];
+				Centrales c = new Centrales(param, seed);					
+				Clientes cl = new Clientes(1000, propc, 0.5D, seed);   			
+				CentralsBoard centralsBoard = new CentralsBoard(c, cl, CentralsBoard.FUZZY, seed);
+				Problem p = new Problem(centralsBoard,
+										new CentralsSuccessorFunction1(),
+										new CentralsGoalTest(),
+										new CentralsHeuristicFunction3());
+				long startTime = System.currentTimeMillis();
+				HillClimbingSearch search = new HillClimbingSearch();
+				SearchAgent agent = new SearchAgent(p, search);
+				long endTime = System.currentTimeMillis();
+				long execTime = endTime - startTime;
+						
+				CentralsBoard finalState = (CentralsBoard) search.getGoalState();
+				sumExecTime += execTime;
+				sumGanancias += finalState.getGanancia();
+				correct &= finalState.isCorrect();
+				if (!correct) z = repeticiones;						
+			}
+			System.out.println(3 + " " + 1 + " " + sumGanancias/repeticiones + " " + " " + sumExecTime/repeticiones + " " + correct + " ");
+			
+			// 3 2
+			sumExecTime = sumGanancias = 0;
+			correct = true;	
+			for (int z = 0; z < repeticiones; ++z) {
+				int seed = seeds[z];
+				Centrales c = new Centrales(param, seed);					
+				Clientes cl = new Clientes(1000, propc, 0.5D, seed);   			
+				CentralsBoard centralsBoard = new CentralsBoard(c, cl, CentralsBoard.FUZZY, seed);
+				Problem p = new Problem(centralsBoard,
+										new CentralsSuccessorFunction2(),
+										new CentralsGoalTest(),
+										new CentralsHeuristicFunction3());
+				long startTime = System.currentTimeMillis();
+				HillClimbingSearch search = new HillClimbingSearch();
+				SearchAgent agent = new SearchAgent(p, search);
+				long endTime = System.currentTimeMillis();
+				long execTime = endTime - startTime;
+						
+				CentralsBoard finalState = (CentralsBoard) search.getGoalState();
+				sumExecTime += execTime;
+				sumGanancias += finalState.getGanancia();
+				correct &= finalState.isCorrect();
+				if (!correct) z = repeticiones;						
+			}
+			System.out.println(3 + " " + 2 + " " + sumGanancias/repeticiones + " " + " " + sumExecTime/repeticiones + " " + correct + " ");
+			
+			// 3 3
+			sumExecTime = sumGanancias = 0;
+			correct = true;	
+			for (int z = 0; z < repeticiones; ++z) {
+				int seed = seeds[z];
+				Centrales c = new Centrales(param, seed);					
+				Clientes cl = new Clientes(1000, propc, 0.5D, seed);   			
+				CentralsBoard centralsBoard = new CentralsBoard(c, cl, CentralsBoard.FUZZY, seed);
+				Problem p = new Problem(centralsBoard,
+										new CentralsSuccessorFunction3(),
+										new CentralsGoalTest(),
+										new CentralsHeuristicFunction3());
+				long startTime = System.currentTimeMillis();
+				HillClimbingSearch search = new HillClimbingSearch();
+				SearchAgent agent = new SearchAgent(p, search);
+				long endTime = System.currentTimeMillis();
+				long execTime = endTime - startTime;
+						
+				CentralsBoard finalState = (CentralsBoard) search.getGoalState();
+				sumExecTime += execTime;
+				sumGanancias += finalState.getGanancia();
+				correct &= finalState.isCorrect();
+				if (!correct) z = repeticiones;						
+			}
+			System.out.println(3 + " " + 3 + " " + sumGanancias/repeticiones + " " + " " + sumExecTime/repeticiones + " " + correct + " ");
+			
+			// 3 4
+			sumExecTime = sumGanancias = 0;
+			correct = true;	
+			for (int z = 0; z < repeticiones; ++z) {
+				int seed = seeds[z];
+				Centrales c = new Centrales(param, seed);					
+				Clientes cl = new Clientes(1000, propc, 0.5D, seed);   			
+				CentralsBoard centralsBoard = new CentralsBoard(c, cl, CentralsBoard.FUZZY, seed);
+				Problem p = new Problem(centralsBoard,
+										new CentralsSuccessorFunction4(),
+										new CentralsGoalTest(),
+										new CentralsHeuristicFunction3());
+				long startTime = System.currentTimeMillis();
+				HillClimbingSearch search = new HillClimbingSearch();
+				SearchAgent agent = new SearchAgent(p, search);
+				long endTime = System.currentTimeMillis();
+				long execTime = endTime - startTime;
+						
+				CentralsBoard finalState = (CentralsBoard) search.getGoalState();
+				sumExecTime += execTime;
+				sumGanancias += finalState.getGanancia();
+				correct &= finalState.isCorrect();
+				if (!correct) z = repeticiones;						
+			}
+			System.out.println(3 + " " + 4 + " " + sumGanancias/repeticiones + " " + " " + sumExecTime/repeticiones + " " + correct + " ");
+			
+			// 3 5
+			sumExecTime = sumGanancias = 0;
+			correct = true;	
+			for (int z = 0; z < repeticiones; ++z) {
+				int seed = seeds[z];
+				Centrales c = new Centrales(param, seed);					
+				Clientes cl = new Clientes(1000, propc, 0.5D, seed);   			
+				CentralsBoard centralsBoard = new CentralsBoard(c, cl, CentralsBoard.FUZZY, seed);
+				Problem p = new Problem(centralsBoard,
+										new CentralsSuccessorFunction5(),
+										new CentralsGoalTest(),
+										new CentralsHeuristicFunction3());
+				long startTime = System.currentTimeMillis();
+				HillClimbingSearch search = new HillClimbingSearch();
+				SearchAgent agent = new SearchAgent(p, search);
+				long endTime = System.currentTimeMillis();
+				long execTime = endTime - startTime;
+						
+				CentralsBoard finalState = (CentralsBoard) search.getGoalState();
+				sumExecTime += execTime;
+				sumGanancias += finalState.getGanancia();
+				correct &= finalState.isCorrect();
+				if (!correct) z = repeticiones;						
+			}
+			System.out.println(3 + " " + 5 + " " + sumGanancias/repeticiones + " " + " " + sumExecTime/repeticiones + " " + correct + " ");
+			
+			// 3 6
+			sumExecTime = sumGanancias = 0;
+			correct = true;	
+			for (int z = 0; z < repeticiones; ++z) {
+				int seed = seeds[z];
+				Centrales c = new Centrales(param, seed);					
+				Clientes cl = new Clientes(1000, propc, 0.5D, seed);   			
+				CentralsBoard centralsBoard = new CentralsBoard(c, cl, CentralsBoard.FUZZY, seed);
+				Problem p = new Problem(centralsBoard,
+										new CentralsSuccessorFunction6(),
+										new CentralsGoalTest(),
+										new CentralsHeuristicFunction3());
+				long startTime = System.currentTimeMillis();
+				HillClimbingSearch search = new HillClimbingSearch();
+				SearchAgent agent = new SearchAgent(p, search);
+				long endTime = System.currentTimeMillis();
+				long execTime = endTime - startTime;
+						
+				CentralsBoard finalState = (CentralsBoard) search.getGoalState();
+				sumExecTime += execTime;
+				sumGanancias += finalState.getGanancia();
+				correct &= finalState.isCorrect();
+				if (!correct) z = repeticiones;						
+			}
+			System.out.println(3 + " " + 6 + " " + sumGanancias/repeticiones + " " + " " + sumExecTime/repeticiones + " " + correct + " ");
+			
+			
+			
+			
+			// 4 1
+			sumExecTime = sumGanancias = 0;
+			correct = true;	
+			for (int z = 0; z < repeticiones; ++z) {
+				int seed = seeds[z];
+				Centrales c = new Centrales(param, seed);					
+				Clientes cl = new Clientes(1000, propc, 0.5D, seed);   			
+				CentralsBoard centralsBoard = new CentralsBoard(c, cl, CentralsBoard.FUZZY, seed);
+				Problem p = new Problem(centralsBoard,
+										new CentralsSuccessorFunction1(),
+										new CentralsGoalTest(),
+										new CentralsHeuristicFunction4());
+				long startTime = System.currentTimeMillis();
+				HillClimbingSearch search = new HillClimbingSearch();
+				SearchAgent agent = new SearchAgent(p, search);
+				long endTime = System.currentTimeMillis();
+				long execTime = endTime - startTime;
+						
+				CentralsBoard finalState = (CentralsBoard) search.getGoalState();
+				sumExecTime += execTime;
+				sumGanancias += finalState.getGanancia();
+				correct &= finalState.isCorrect();
+				if (!correct) z = repeticiones;						
+			}
+			System.out.println(4 + " " + 1 + " " + sumGanancias/repeticiones + " " + " " + sumExecTime/repeticiones + " " + correct + " ");
+			
+			// 4 2
+			sumExecTime = sumGanancias = 0;
+			correct = true;	
+			for (int z = 0; z < repeticiones; ++z) {
+				int seed = seeds[z];
+				Centrales c = new Centrales(param, seed);					
+				Clientes cl = new Clientes(1000, propc, 0.5D, seed);   			
+				CentralsBoard centralsBoard = new CentralsBoard(c, cl, CentralsBoard.FUZZY, seed);
+				Problem p = new Problem(centralsBoard,
+										new CentralsSuccessorFunction2(),
+										new CentralsGoalTest(),
+										new CentralsHeuristicFunction4());
+				long startTime = System.currentTimeMillis();
+				HillClimbingSearch search = new HillClimbingSearch();
+				SearchAgent agent = new SearchAgent(p, search);
+				long endTime = System.currentTimeMillis();
+				long execTime = endTime - startTime;
+						
+				CentralsBoard finalState = (CentralsBoard) search.getGoalState();
+				sumExecTime += execTime;
+				sumGanancias += finalState.getGanancia();
+				correct &= finalState.isCorrect();
+				if (!correct) z = repeticiones;						
+			}
+			System.out.println(4 + " " + 2 + " " + sumGanancias/repeticiones + " " + " " + sumExecTime/repeticiones + " " + correct + " ");
+			
+			// 4 3
+			sumExecTime = sumGanancias = 0;
+			correct = true;	
+			for (int z = 0; z < repeticiones; ++z) {
+				int seed = seeds[z];
+				Centrales c = new Centrales(param, seed);					
+				Clientes cl = new Clientes(1000, propc, 0.5D, seed);   			
+				CentralsBoard centralsBoard = new CentralsBoard(c, cl, CentralsBoard.FUZZY, seed);
+				Problem p = new Problem(centralsBoard,
+										new CentralsSuccessorFunction3(),
+										new CentralsGoalTest(),
+										new CentralsHeuristicFunction4());
+				long startTime = System.currentTimeMillis();
+				HillClimbingSearch search = new HillClimbingSearch();
+				SearchAgent agent = new SearchAgent(p, search);
+				long endTime = System.currentTimeMillis();
+				long execTime = endTime - startTime;
+						
+				CentralsBoard finalState = (CentralsBoard) search.getGoalState();
+				sumExecTime += execTime;
+				sumGanancias += finalState.getGanancia();
+				correct &= finalState.isCorrect();
+				if (!correct) z = repeticiones;						
+			}
+			System.out.println(4 + " " + 3 + " " + sumGanancias/repeticiones + " " + " " + sumExecTime/repeticiones + " " + correct + " ");
+			
+			// 4 4
+			sumExecTime = sumGanancias = 0;
+			correct = true;	
+			for (int z = 0; z < repeticiones; ++z) {
+				int seed = seeds[z];
+				Centrales c = new Centrales(param, seed);					
+				Clientes cl = new Clientes(1000, propc, 0.5D, seed);   			
+				CentralsBoard centralsBoard = new CentralsBoard(c, cl, CentralsBoard.FUZZY, seed);
+				Problem p = new Problem(centralsBoard,
+										new CentralsSuccessorFunction4(),
+										new CentralsGoalTest(),
+										new CentralsHeuristicFunction4());
+				long startTime = System.currentTimeMillis();
+				HillClimbingSearch search = new HillClimbingSearch();
+				SearchAgent agent = new SearchAgent(p, search);
+				long endTime = System.currentTimeMillis();
+				long execTime = endTime - startTime;
+						
+				CentralsBoard finalState = (CentralsBoard) search.getGoalState();
+				sumExecTime += execTime;
+				sumGanancias += finalState.getGanancia();
+				correct &= finalState.isCorrect();
+				if (!correct) z = repeticiones;						
+			}
+			System.out.println(4 + " " + 4 + " " + sumGanancias/repeticiones + " " + " " + sumExecTime/repeticiones + " " + correct + " ");
+			
+			// 4 5
+			sumExecTime = sumGanancias = 0;
+			correct = true;	
+			for (int z = 0; z < repeticiones; ++z) {
+				int seed = seeds[z];
+				Centrales c = new Centrales(param, seed);					
+				Clientes cl = new Clientes(1000, propc, 0.5D, seed);   			
+				CentralsBoard centralsBoard = new CentralsBoard(c, cl, CentralsBoard.FUZZY, seed);
+				Problem p = new Problem(centralsBoard,
+										new CentralsSuccessorFunction5(),
+										new CentralsGoalTest(),
+										new CentralsHeuristicFunction4());
+				long startTime = System.currentTimeMillis();
+				HillClimbingSearch search = new HillClimbingSearch();
+				SearchAgent agent = new SearchAgent(p, search);
+				long endTime = System.currentTimeMillis();
+				long execTime = endTime - startTime;
+						
+				CentralsBoard finalState = (CentralsBoard) search.getGoalState();
+				sumExecTime += execTime;
+				sumGanancias += finalState.getGanancia();
+				correct &= finalState.isCorrect();
+				if (!correct) z = repeticiones;						
+			}
+			System.out.println(4 + " " + 5 + " " + sumGanancias/repeticiones + " " + " " + sumExecTime/repeticiones + " " + correct + " ");
+			
+			// 4 6
+			sumExecTime = sumGanancias = 0;
+			correct = true;	
+			for (int z = 0; z < repeticiones; ++z) {
+				int seed = seeds[z];
+				Centrales c = new Centrales(param, seed);					
+				Clientes cl = new Clientes(1000, propc, 0.5D, seed);   			
+				CentralsBoard centralsBoard = new CentralsBoard(c, cl, CentralsBoard.FUZZY, seed);
+				Problem p = new Problem(centralsBoard,
+										new CentralsSuccessorFunction6(),
+										new CentralsGoalTest(),
+										new CentralsHeuristicFunction4());
+				long startTime = System.currentTimeMillis();
+				HillClimbingSearch search = new HillClimbingSearch();
+				SearchAgent agent = new SearchAgent(p, search);
+				long endTime = System.currentTimeMillis();
+				long execTime = endTime - startTime;
+						
+				CentralsBoard finalState = (CentralsBoard) search.getGoalState();
+				sumExecTime += execTime;
+				sumGanancias += finalState.getGanancia();
+				correct &= finalState.isCorrect();
+				if (!correct) z = repeticiones;						
+			}
+			System.out.println(4 + " " + 6 + " " + sumGanancias/repeticiones + " " + " " + sumExecTime/repeticiones + " " + correct + " ");
+			
+			
+			
+			
+			// 5 1
+			sumExecTime = sumGanancias = 0;
+			correct = true;	
+			for (int z = 0; z < repeticiones; ++z) {
+				int seed = seeds[z];
+				Centrales c = new Centrales(param, seed);					
+				Clientes cl = new Clientes(1000, propc, 0.5D, seed);   			
+				CentralsBoard centralsBoard = new CentralsBoard(c, cl, CentralsBoard.FUZZY, seed);
+				Problem p = new Problem(centralsBoard,
+										new CentralsSuccessorFunction1(),
+										new CentralsGoalTest(),
+										new CentralsHeuristicFunction5());
+				long startTime = System.currentTimeMillis();
+				HillClimbingSearch search = new HillClimbingSearch();
+				SearchAgent agent = new SearchAgent(p, search);
+				long endTime = System.currentTimeMillis();
+				long execTime = endTime - startTime;
+						
+				CentralsBoard finalState = (CentralsBoard) search.getGoalState();
+				sumExecTime += execTime;
+				sumGanancias += finalState.getGanancia();
+				correct &= finalState.isCorrect();
+				if (!correct) z = repeticiones;						
+			}
+			System.out.println(5 + " " + 1 + " " + sumGanancias/repeticiones + " " + " " + sumExecTime/repeticiones + " " + correct + " ");
+			
+			// 5 2
+			sumExecTime = sumGanancias = 0;
+			correct = true;	
+			for (int z = 0; z < repeticiones; ++z) {
+				int seed = seeds[z];
+				Centrales c = new Centrales(param, seed);					
+				Clientes cl = new Clientes(1000, propc, 0.5D, seed);   			
+				CentralsBoard centralsBoard = new CentralsBoard(c, cl, CentralsBoard.FUZZY, seed);
+				Problem p = new Problem(centralsBoard,
+										new CentralsSuccessorFunction2(),
+										new CentralsGoalTest(),
+										new CentralsHeuristicFunction5());
+				long startTime = System.currentTimeMillis();
+				HillClimbingSearch search = new HillClimbingSearch();
+				SearchAgent agent = new SearchAgent(p, search);
+				long endTime = System.currentTimeMillis();
+				long execTime = endTime - startTime;
+						
+				CentralsBoard finalState = (CentralsBoard) search.getGoalState();
+				sumExecTime += execTime;
+				sumGanancias += finalState.getGanancia();
+				correct &= finalState.isCorrect();
+				if (!correct) z = repeticiones;						
+			}
+			System.out.println(5 + " " + 2 + " " + sumGanancias/repeticiones + " " + " " + sumExecTime/repeticiones + " " + correct + " ");
+			
+			// 5 3
+			sumExecTime = sumGanancias = 0;
+			correct = true;	
+			for (int z = 0; z < repeticiones; ++z) {
+				int seed = seeds[z];
+				Centrales c = new Centrales(param, seed);					
+				Clientes cl = new Clientes(1000, propc, 0.5D, seed);   			
+				CentralsBoard centralsBoard = new CentralsBoard(c, cl, CentralsBoard.FUZZY, seed);
+				Problem p = new Problem(centralsBoard,
+										new CentralsSuccessorFunction3(),
+										new CentralsGoalTest(),
+										new CentralsHeuristicFunction5());
+				long startTime = System.currentTimeMillis();
+				HillClimbingSearch search = new HillClimbingSearch();
+				SearchAgent agent = new SearchAgent(p, search);
+				long endTime = System.currentTimeMillis();
+				long execTime = endTime - startTime;
+						
+				CentralsBoard finalState = (CentralsBoard) search.getGoalState();
+				sumExecTime += execTime;
+				sumGanancias += finalState.getGanancia();
+				correct &= finalState.isCorrect();
+				if (!correct) z = repeticiones;						
+			}
+			System.out.println(5 + " " + 3 + " " + sumGanancias/repeticiones + " " + " " + sumExecTime/repeticiones + " " + correct + " ");
+			
+			// 5 4
+			sumExecTime = sumGanancias = 0;
+			correct = true;	
+			for (int z = 0; z < repeticiones; ++z) {
+				int seed = seeds[z];
+				Centrales c = new Centrales(param, seed);					
+				Clientes cl = new Clientes(1000, propc, 0.5D, seed);   			
+				CentralsBoard centralsBoard = new CentralsBoard(c, cl, CentralsBoard.FUZZY, seed);
+				Problem p = new Problem(centralsBoard,
+										new CentralsSuccessorFunction4(),
+										new CentralsGoalTest(),
+										new CentralsHeuristicFunction5());
+				long startTime = System.currentTimeMillis();
+				HillClimbingSearch search = new HillClimbingSearch();
+				SearchAgent agent = new SearchAgent(p, search);
+				long endTime = System.currentTimeMillis();
+				long execTime = endTime - startTime;
+						
+				CentralsBoard finalState = (CentralsBoard) search.getGoalState();
+				sumExecTime += execTime;
+				sumGanancias += finalState.getGanancia();
+				correct &= finalState.isCorrect();
+				if (!correct) z = repeticiones;						
+			}
+			System.out.println(5 + " " + 4 + " " + sumGanancias/repeticiones + " " + " " + sumExecTime/repeticiones + " " + correct + " ");
+			
+			// 5 5
+			sumExecTime = sumGanancias = 0;
+			correct = true;	
+			for (int z = 0; z < repeticiones; ++z) {
+				int seed = seeds[z];
+				Centrales c = new Centrales(param, seed);					
+				Clientes cl = new Clientes(1000, propc, 0.5D, seed);   			
+				CentralsBoard centralsBoard = new CentralsBoard(c, cl, CentralsBoard.FUZZY, seed);
+				Problem p = new Problem(centralsBoard,
+										new CentralsSuccessorFunction5(),
+										new CentralsGoalTest(),
+										new CentralsHeuristicFunction5());
+				long startTime = System.currentTimeMillis();
+				HillClimbingSearch search = new HillClimbingSearch();
+				SearchAgent agent = new SearchAgent(p, search);
+				long endTime = System.currentTimeMillis();
+				long execTime = endTime - startTime;
+						
+				CentralsBoard finalState = (CentralsBoard) search.getGoalState();
+				sumExecTime += execTime;
+				sumGanancias += finalState.getGanancia();
+				correct &= finalState.isCorrect();
+				if (!correct) z = repeticiones;						
+			}
+			System.out.println(5 + " " + 5 + " " + sumGanancias/repeticiones + " " + " " + sumExecTime/repeticiones + " " + correct + " ");
+			
+			// 5 6
+			sumExecTime = sumGanancias = 0;
+			correct = true;	
+			for (int z = 0; z < repeticiones; ++z) {
+				int seed = seeds[z];
+				Centrales c = new Centrales(param, seed);					
+				Clientes cl = new Clientes(1000, propc, 0.5D, seed);   			
+				CentralsBoard centralsBoard = new CentralsBoard(c, cl, CentralsBoard.FUZZY, seed);
+				Problem p = new Problem(centralsBoard,
+										new CentralsSuccessorFunction6(),
+										new CentralsGoalTest(),
+										new CentralsHeuristicFunction5());
+				long startTime = System.currentTimeMillis();
+				HillClimbingSearch search = new HillClimbingSearch();
+				SearchAgent agent = new SearchAgent(p, search);
+				long endTime = System.currentTimeMillis();
+				long execTime = endTime - startTime;
+						
+				CentralsBoard finalState = (CentralsBoard) search.getGoalState();
+				sumExecTime += execTime;
+				sumGanancias += finalState.getGanancia();
+				correct &= finalState.isCorrect();
+				if (!correct) z = repeticiones;						
+			}
+			System.out.println(5 + " " + 6 + " " + sumGanancias/repeticiones + " " + " " + sumExecTime/repeticiones + " " + correct + " ");
+			
+			
+			
+			
 
 		} catch (Exception e) {
 			e.printStackTrace();
