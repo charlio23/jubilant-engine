@@ -56,9 +56,9 @@ public class CentralsBoard {
 
     public CentralsBoard(int[] pCentrales, int numClientes, double[] pClientes, double propg, int estrategia,int seed) {
         try {
-        state = new int[clientes.size()];
-        clientes = new Clientes(numClientes, pClientes, propg, seed);
-        centrales = new Centrales(pCentrales, seed);
+            state = new int[clientes.size()];
+            clientes = new Clientes(numClientes, pClientes, propg, seed);
+            centrales = new Centrales(pCentrales, seed);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -481,28 +481,28 @@ public class CentralsBoard {
         for(int id = 0; id < state.length; ++id) if(state[id] != -1 && demanda[state[id]] < maxProduccion[state[id]]) ans[cnt++] = id;
         return ans;
     }
-    
-    public double[] getPercentUsedCentrals() {
-		double[] percent = new double[3];
-		int[] tipoCentral = new int[3];
-		boolean[] centralesEnMarcha = new boolean[centrales.size()];
-		for (int id = 0; id < state.length; ++id) {
-			int centId = state[id];
-			if (centId != -1 && !centralesEnMarcha[centId]) {
-				Central central = centrales.get(id);
-				percent[central.getTipo()]++;
-				tipoCentral[central.getTipo()]++;
-				centralesEnMarcha[centId] = true;
-			}
-		}
-		
-		for (int i = 0; i < percent.length; ++i)
-			percent[i] /= tipoCentral[i];
-				
-		return percent;
-	}
 
-	public double getHeuristicValue1() {
+    public double[] getPercentUsedCentrals() {
+        double[] percent = new double[3];
+        int[] tipoCentral = new int[3];
+        boolean[] centralesEnMarcha = new boolean[centrales.size()];
+        for (int id = 0; id < state.length; ++id) {
+            int centId = state[id];
+            if (centId != -1 && !centralesEnMarcha[centId]) {
+                Central central = centrales.get(id);
+                percent[central.getTipo()]++;
+                tipoCentral[central.getTipo()]++;
+                centralesEnMarcha[centId] = true;
+            }
+        }
+
+        for (int i = 0; i < percent.length; ++i)
+            percent[i] /= tipoCentral[i];
+
+        return percent;
+    }
+
+    public double getHeuristicValue1() {
         return heuristicValue1;
     }
     public double getHeuristicValue2() {
@@ -517,7 +517,6 @@ public class CentralsBoard {
     public double getGanancia(){
         return ganancia;
     }
-
 
     private void calculaSuministro() {
         for (int i = 0; i < suministro.length; ++i) {
@@ -567,5 +566,18 @@ public class CentralsBoard {
             }
         }
         heuristicValue2 += overflowPersonas*overflowPersonas*HEURISTIC2_CONST;
+    }
+
+    public void ReportUse() {
+        int[] tipoCentral = new int[3];
+        for (int id = 0; id < state.length; ++id) {
+            int centId = state[id];
+            if (centId != -1) {
+                Central central = centrales.get(centId);
+                tipoCentral[central.getTipo()]++;
+            }
+        }
+        for(int i = 0; i < 3; ++i) System.out.print(tipoCentral[i] + " ");
+        System.out.println();
     }
 }
