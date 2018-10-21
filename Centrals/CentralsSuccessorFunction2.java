@@ -13,10 +13,12 @@ public class CentralsSuccessorFunction2 extends AbsCentralsSuccessorFunction {
         List successors = new ArrayList();
         Random rnd = new Random((int)board.getGanancia());
         //board.printState();
+        /*
         if(board.isCorrect()){
             System.out.println(String.valueOf(board.getGanancia()));
         }
         else System.out.println("ROP");
+        */
         int[] Cen = board.getNonSaturatedCentrals();
         for (int id = 0; id < board.getClientesSize(); ++id) {
             for (int jd = 0; jd < Cen.length; ++jd) {

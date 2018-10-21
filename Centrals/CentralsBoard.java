@@ -11,7 +11,15 @@ import java.util.ArrayList;
 
 public class CentralsBoard {
 
+    private static final double HEURISTIC2_CONST = 50000;
     private int[] state;
+    private double[] suministro;
+    private int[] clientesEnCentral;
+    private double ganancia;
+    private double heuristicValue1;
+    private double heuristicValue2;
+    private double overflowPersonas;
+
     public static Centrales centrales;
     public static Clientes clientes;
 
@@ -30,12 +38,20 @@ public class CentralsBoard {
 
     public static int SEED;
 
+    public static int MAXBENEFIT = 50000;
+
     public CentralsBoard(Centrales centrales, Clientes clientes, int estrategia, int seed) {
         this.centrales = centrales;
         this.clientes = clientes;
         this.state = new int[clientes.size()];
+        this.clientesEnCentral=new int[centrales.size()];
+        this.suministro = new double[centrales.size()];
+
         SEED = seed;
         initialize(estrategia);
+        calculaSuministro();
+        calculaGanancia();
+        heuristicFunction();
     }
 
     public CentralsBoard(int[] pCentrales, int numClientes, double[] pClientes, double propg, int estrategia,int seed) {
@@ -172,13 +188,100 @@ public class CentralsBoard {
 
     //Pre: centId puede ser -1 sii Cliente clId no es garantizado
     public boolean setCentral(int clId, int centId) {
+        if (centId == state[clId]) return false;
         if (clientes.get(clId).getContrato() == NOGARANTIZADO || centId != -1){
+            int oldCentId = state[clId];
             state[clId] = centId;
+            double nuevoOverflowPersonas = overflowPersonas;
+            if (oldCentId != -1) {
+                //mirem l'overflow de la central original i si penalitza el sumem
+                double nuevoSuministro = suministro[oldCentId] - clientes.get(clId).getConsumo() / (1 - perdida(clId, oldCentId));
+                double overflow = suministro[oldCentId] - centrales.get(oldCentId).getProduccion();
+                if (overflow > 0) {
+                    overflow = Math.max(overflow, 1.0);
+                    heuristicValue1 -= overflow * overflow * MAXBENEFIT * centrales.size();
+                    double nuevoOverflow = nuevoSuministro - centrales.get(oldCentId).getProduccion();
+                    if (nuevoOverflow > 0) {
+                        --nuevoOverflowPersonas;
+                        nuevoOverflow = Math.max(nuevoOverflow, 1.0);
+                        heuristicValue1 += nuevoOverflow * nuevoOverflow * MAXBENEFIT * centrales.size();
+                    } else {
+                        nuevoOverflowPersonas -= clientesEnCentral[oldCentId];
+                    }
+                }
+                --clientesEnCentral[oldCentId];
+                // ara ganancia
+                double aux = 0;
+                if (nuevoSuministro <= 1e-10) {
+                    aux += costeMarcha(oldCentId);
+                    aux -= costeParada(oldCentId);
+                }
+                ganancia += aux;
+                heuristicValue1 -=aux;
+            } else {
+                double aux = 0;
+                aux += precioTarifa(clId);
+                try {
+                    aux += VEnergia.getTarifaClientePenalizacion(clientes.get(clId).getContrato())*clientes.get(clId).getConsumo();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                ganancia += aux;
+                heuristicValue1 -= aux;
+            }
+            if (centId != -1) {
+                double nuevoSuministro = suministro[centId] + clientes.get(clId).getConsumo() / (1 - perdida(clId, state[clId]));
+                double nuevoOverflow = nuevoSuministro - centrales.get(centId).getProduccion();
+                if (nuevoOverflow > 0) {
+                    nuevoOverflow = Math.max(nuevoOverflow, 1.0);
+                    heuristicValue1 += nuevoOverflow * nuevoOverflow * MAXBENEFIT * centrales.size();
+                    double overflow = suministro[centId] - centrales.get(centId).getProduccion();
+                    ++nuevoOverflowPersonas;
+                    if (overflow > 0) {
+                        overflow = Math.max(overflow, 1.0);
+                        heuristicValue1 -= overflow * overflow * MAXBENEFIT * centrales.size();
+                    } else {
+                        nuevoOverflowPersonas += clientesEnCentral[centId];
+                    }
+                }
+                ++clientesEnCentral[centId];
+                // ara ganancia
+                double aux = 0;
+                if (suministro[centId] <= 1e-10) {
+                    aux -= costeMarcha(centId);
+                    aux += costeParada(centId);
+                }
+                ganancia += aux;
+                heuristicValue1 -=aux;
+            } else {
+                double aux = 0;
+                aux -= precioTarifa(clId);
+                try {
+                    aux -= VEnergia.getTarifaClientePenalizacion(clientes.get(clId).getContrato())*clientes.get(clId).getConsumo();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                ganancia += aux;
+                heuristicValue1 -= aux;
+            }
+
+
+            // arreglo suministre
+            if (oldCentId != -1) {
+                suministro[oldCentId] -= clientes.get(clId).getConsumo() / (1 - perdida(clId, oldCentId));
+            }
+            if (centId != -1) {
+                suministro[centId] += clientes.get(clId).getConsumo() / (1 - perdida(clId, state[clId]));
+            }
+            overflowPersonas = nuevoOverflowPersonas;
+            heuristicValue2 = -ganancia + overflowPersonas*overflowPersonas*HEURISTIC2_CONST;
             return true;
         }
         return false;
     }
 
+
+    //simple swap de dos centrales
     public boolean swapCentral(int clId1, int clId2) {
         int cen1 = state[clId1];
         int cen2 = state[clId2];
@@ -188,7 +291,7 @@ public class CentralsBoard {
         }
         return false;
     }
-
+    //le quito la central a un cliente con otro nuevo
     public boolean substituteClient(int clId1, int clId2) {
         int cen1 = state[clId1];
         int cen2 = state[clId2];
@@ -268,6 +371,12 @@ public class CentralsBoard {
     public CentralsBoard getCopy() {
         CentralsBoard curBoard = new CentralsBoard();
         curBoard.state = this.state.clone();
+        curBoard.suministro = this.suministro.clone();
+        curBoard.heuristicValue1 = this.heuristicValue1;
+        curBoard.heuristicValue2 = this.heuristicValue2;
+        curBoard.overflowPersonas = this.overflowPersonas;
+        curBoard.ganancia = this.ganancia;
+        curBoard.clientesEnCentral = this.clientesEnCentral.clone();
         return curBoard;
     }
 
@@ -293,39 +402,6 @@ public class CentralsBoard {
 
     public double getProduccion(int jd) {
         return centrales.get(jd).getProduccion();
-    }
-
-    public double getGanancia() {
-        double ganancia = 0;
-        //Centrales
-        double[] suministro = new double[centrales.size()];
-        for(int i = 0; i < suministro.length; ++i) {
-            suministro[i] = 0.0;
-        }
-        for (int id = 0; id < state.length; ++id) {
-            if (state[id] != -1)
-                try {
-                    suministro[state[id]] += clientes.get(id).getConsumo() / (1 - perdida(id, state[id]));
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-        }
-        for (int jd = 0; jd < centrales.size(); ++jd) {
-            if (suministro[jd] > 0) ganancia -= costeMarcha(jd);
-            else ganancia -= costeParada(jd);
-        }
-
-        //Clientes
-        for (int id = 0; id < state.length; ++id) {
-            try{
-                if (state[id] != -1) ganancia += precioTarifa(id);
-                else ganancia -= VEnergia.getTarifaClientePenalizacion(clientes.get(id).getContrato())*clientes.get(id).getConsumo();
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-            }
-        }
-        return ganancia;
     }
 
     public int[] getNonSaturatedCentrals() {
@@ -425,4 +501,71 @@ public class CentralsBoard {
 				
 		return percent;
 	}
+
+	public double getHeuristicValue1() {
+        return heuristicValue1;
+    }
+    public double getHeuristicValue2() {
+        //System.out.println(heuristicValue2);
+        return heuristicValue2;
+    }
+    public double getHeuristicValue3() {
+        if (heuristicValue1 > 1) return heuristicValue1;
+        else return -ganancia;
+    }
+
+    public double getGanancia(){
+        return ganancia;
+    }
+
+
+    private void calculaSuministro() {
+        for (int i = 0; i < suministro.length; ++i) {
+            suministro[i] = 0.0;
+            clientesEnCentral[i] = 0;
+        }
+
+        for (int id = 0; id < state.length; ++id) {
+            if (state[id] != -1)
+                try {
+                    suministro[state[id]] += clientes.get(id).getConsumo() / (1 - perdida(id, state[id]));
+                    ++clientesEnCentral[state[id]];
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+        }
+    }
+
+    private void calculaGanancia() {
+        //Centrales
+        for (int jd = 0; jd < centrales.size(); ++jd) {
+            if (suministro[jd] > 0) ganancia -= costeMarcha(jd);
+            else ganancia -= costeParada(jd);
+        }
+
+        //Clientes
+        for (int id = 0; id < state.length; ++id) {
+            try{
+                if (state[id] != -1) ganancia += precioTarifa(id);
+                else ganancia -= VEnergia.getTarifaClientePenalizacion(clientes.get(id).getContrato())*clientes.get(id).getConsumo();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
+    private void heuristicFunction() {
+        heuristicValue1 = -ganancia;
+        heuristicValue2 = -ganancia;
+        overflowPersonas = 0;
+        for (int jd = 0; jd < centrales.size(); ++jd) {
+            double overflow = suministro[jd] - centrales.get(jd).getProduccion();
+            if (overflow > 0) {
+                overflow = Math.max(overflow, 1.0);
+                heuristicValue1 += overflow * overflow * MAXBENEFIT * centrales.size();
+                overflowPersonas += clientesEnCentral[jd];
+            }
+        }
+        heuristicValue2 += overflowPersonas*overflowPersonas*HEURISTIC2_CONST;
+    }
 }

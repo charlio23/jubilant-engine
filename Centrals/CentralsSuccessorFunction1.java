@@ -11,10 +11,12 @@ public class CentralsSuccessorFunction1 extends AbsCentralsSuccessorFunction {
         CentralsBoard board = (CentralsBoard) o;
         List successors = new ArrayList();
         //board.printState();
+        /*
         if(board.isCorrect()){
             System.out.println(String.valueOf(board.getGanancia()));
         }
         else System.out.print("ROP");
+        */
         for (int id = 0; id < board.getClientesSize(); ++id) {
             int jd;
             if (board.isGuaranteed(id)) jd = 0;

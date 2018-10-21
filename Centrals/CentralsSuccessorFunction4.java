@@ -12,11 +12,14 @@ public class CentralsSuccessorFunction4 extends AbsCentralsSuccessorFunction {
     CentralsBoard board = (CentralsBoard) o;
     List successors = new ArrayList();
     //board.printState();
+    /*
     CentralsHeuristicFunction5 heuristic = new CentralsHeuristicFunction5();
     if(board.isCorrect()){
       System.out.println(String.valueOf(board.getGanancia()));
     }
+
     else System.out.println("ROP " + heuristic.heuristicFunction(board));
+    */
     int[] nonSaturated = board.getNonSaturatedCentrals();
 
     for (int id = 0; id < board.getClientesSize(); ++id) {

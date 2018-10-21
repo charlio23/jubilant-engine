@@ -26,11 +26,13 @@ public class CentralsSuccessorFunction6 extends AbsCentralsSuccessorFunction {
     CentralsBoard board = (CentralsBoard) o;
     List successors = new ArrayList();
     //board.printState();
+    /*
     CentralsHeuristicFunction5 heuristic = new CentralsHeuristicFunction5();
     if(board.isCorrect()){
       System.out.println(String.valueOf(board.getGanancia()));
     }
     else System.out.println("ROP " + heuristic.heuristicFunction(board));
+    */
     int[] nonSaturated = board.getNonSaturatedCentrals();
 
     if (nonSaturated.length == board.getCentralesSize()) {
