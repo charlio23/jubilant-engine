@@ -32,11 +32,9 @@ public class CentralsBoard {
   public static final int ONE = 0;
   public static final int RANDOM1 = 1;
   public static final int RANDOM2 = 2;
-  public static final int DISTANCE1 = 3;
-  public static final int DISTANCE2 = 4;
-  public static final int FUZZY = 5;
-  public static final int FUZZY2 = 6;
-  public static final int BUIT = 7;
+  public static final int FUZZY = 3;
+  public static final int FUZZY2 = 4;
+  public static final int BUIT = 5;
 
   public static final int NUMINICIO = 8;
 
@@ -97,38 +95,6 @@ public class CentralsBoard {
       Random r = new Random(SEED);
       for (int id = 0; id < state.length; ++id)
         state[id] = r.nextInt(centrales.size());
-    }
-    if(estrategia == DISTANCE1) {
-      // Se asigna la central mas proxima a cada cliente garantizado
-      for (int id = 0; id < state.length; ++id) {
-        int centId = -1;
-        double minDis = 150; // maxima es 100*sqrt(2)
-        if (clientes.get(id).getContrato() == GARANTIZADO) {
-          for (int jd = 0; jd < centrales.size(); ++jd) {
-            double auxDis = distance(id, jd);
-            if (auxDis < minDis) {
-              minDis = auxDis;
-              centId = jd;
-            }
-          }
-        }
-        state[id] = centId;
-      }
-    }
-    if(estrategia == DISTANCE2) {
-      // Se asigna la central mas proxima a cada cliente
-      for (int id = 0; id < state.length; ++id) {
-        int centId = -1;
-        double minDis = 150; // maxima es 100*sqrt(2)
-        for (int jd = 0; jd < centrales.size(); ++jd) {
-          double auxDis = distance(id, jd);
-          if (auxDis < minDis) {
-            minDis = auxDis;
-            centId = jd;
-          }
-        }
-        state[id] = centId;
-      }
     }
     if(estrategia == FUZZY) {
       Random r = new Random(SEED);
