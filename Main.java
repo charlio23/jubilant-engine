@@ -6,6 +6,7 @@ import Centrals.CentralsHeuristicFunction2;
 import Centrals.CentralsHeuristicFunction3;
 import Centrals.CentralsHeuristicFunction4;
 import Centrals.CentralsHeuristicFunction5;
+import Centrals.CentralsHeuristicFunction_ex5;
 //import Centrals.CentralsSuccessorFunction;
 import Centrals.CentralsSuccessorFunction1;
 import Centrals.CentralsSuccessorFunction2;
@@ -13,6 +14,7 @@ import Centrals.CentralsSuccessorFunction3;
 import Centrals.CentralsSuccessorFunction4;
 import Centrals.CentralsSuccessorFunction5;
 import Centrals.CentralsSuccessorFunction6;
+import Centrals.CentralsSuccessorFunction_ex5;
 import IA.Energia.Centrales;
 import IA.Energia.Clientes;
 import aima.search.framework.Problem;
@@ -34,13 +36,13 @@ public class Main {
             int[] param = new int[]{5, 10, 25};
             Centrales c = new Centrales(param, 4);
             double[] propc = new double[]{0.2D, 0.3D, 0.5D};
-            Clientes cl = new Clientes(1000,propc, 0.5D, 1);
+            Clientes cl = new Clientes(1000,propc, 0.75D, 1);
 
-            CentralsBoard centralsBoard = new CentralsBoard(c, cl, CentralsBoard.FUZZY, Seed);
+            CentralsBoard centralsBoard = new CentralsBoard(c, cl, CentralsBoard.BUIT, Seed);
             Problem p = new Problem(centralsBoard,
-                                    new CentralsSuccessorFunction6(),
+                                    new CentralsSuccessorFunction_ex5(),
                                     new CentralsGoalTest(),
-                                    new CentralsHeuristicFunction4());
+                                    new CentralsHeuristicFunction_ex5());
             Search search = new HillClimbingSearch();
             SearchAgent agent = new SearchAgent(p, search);
 
