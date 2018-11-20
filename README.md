@@ -1,3 +1,10 @@
-#Busqueda Local
+# Lab 1: Artificial Intelligence
 
-Para ejecutar el programa simplemente se ha de ejecutar el script $Compilar.sh$ y luego $Run.sh$
+Hill Climbing & Simulated annealing Local Search
+
+# Authors
+
+Carles Balsells  
+Miguel Cidrás  
+Cesc Folch  
+Dean Zhu  
