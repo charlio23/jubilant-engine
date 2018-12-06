@@ -1,0 +1,149 @@
+; Thu Dec 06 19:12:14 CET 2018
+; 
+;+ (version "3.5")
+;+ (build "Build 663")
+
+([Anciano_Class0] of  Problemas
+
+	(Nombre "Cardiovasculares"))
+
+([Anciano_Class1] of  Problemas
+
+	(Nombre "Respiratorio"))
+
+([Anciano_Class10] of  Aerobico
+
+	(Beneficia
+		[Anciano_Class5]
+		[Anciano_Class0])
+	(Duracion 30)
+	(Intensidad Medio)
+	(Nombre "Andar"))
+
+([Anciano_Class11] of  Aerobico
+
+	(Beneficia
+		[Anciano_Class5]
+		[Anciano_Class0])
+	(Duracion 45)
+	(Intensidad Dificil)
+	(Nombre "Andar"))
+
+([Anciano_Class12] of  Problemas
+
+	(Nombre "Hipertension"))
+
+([Anciano_Class18] of  Musculacion
+
+	(Beneficia
+		[Anciano_Class5]
+		[Anciano_Class0])
+	(Duracion 10)
+	(Intensidad Facil)
+	(Nombre "Levantar los Brazos"))
+
+([Anciano_Class19] of  Musculacion
+
+	(Beneficia
+		[Anciano_Class5]
+		[Anciano_Class0])
+	(Duracion 20)
+	(Intensidad Medio)
+	(Nombre "Levantar los Brazos"))
+
+([Anciano_Class2] of  Problemas
+
+	(Nombre "Diabetes"))
+
+([Anciano_Class20] of  Musculacion
+
+	(Beneficia [Anciano_Class5])
+	(Duracion 30)
+	(Intensidad Dificil)
+	(Nombre "Levantar los Brazos"))
+
+([Anciano_Class21] of  Equilibrio
+
+	(Duracion 10)
+	(Intensidad Facil)
+	(Nombre "Flexion de Rodilla"))
+
+([Anciano_Class22] of  Equilibrio
+
+	(Duracion 20)
+	(Intensidad Medio)
+	(Nombre "Flexion de Rodilla"))
+
+([Anciano_Class23] of  Equilibrio
+
+	(Duracion 30)
+	(Intensidad Dificil)
+	(Nombre "Flexion de Rodilla"))
+
+([Anciano_Class24] of  Flexibilidad
+
+	(Duracion 5)
+	(Intensidad Facil)
+	(Nombre "Rotacion de hombros"))
+
+([Anciano_Class25] of  Flexibilidad
+
+	(Duracion 10)
+	(Intensidad Medio)
+	(Nombre "Rotacion de hombros"))
+
+([Anciano_Class26] of  Flexibilidad
+
+	(Duracion 15)
+	(Intensidad Dificil)
+	(Nombre "Rotacion de hombros"))
+
+([Anciano_Class27] of  Aerobico
+
+	(Beneficia [Anciano_Class0])
+	(Duracion 10)
+	(Intensidad Facil)
+	(Nombre "Correr"))
+
+([Anciano_Class28] of  Aerobico
+
+	(Beneficia [Anciano_Class0])
+	(Duracion 20)
+	(Intensidad Medio)
+	(Nombre "Correr"))
+
+([Anciano_Class29] of  Aerobico
+
+	(Beneficia [Anciano_Class0])
+	(Duracion 30)
+	(Intensidad Dificil)
+	(Nombre "Correr"))
+
+([Anciano_Class3] of  Problemas
+
+	(Nombre "Obesidad"))
+
+([Anciano_Class4] of  Problemas
+
+	(Nombre "Colesterol"))
+
+([Anciano_Class5] of  Problemas
+
+	(Nombre "Osteoporosis"))
+
+([Anciano_Class6] of  Problemas
+
+	(Nombre "Caidas"))
+
+([Anciano_Class7] of  Problemas
+
+	(Nombre "Movilidad"))
+
+([Anciano_Class9] of  Aerobico
+
+	(Beneficia
+		[Anciano_Class5]
+		[Anciano_Class0])
+	(Duracion 15)
+	(Intensidad Facil)
+	(Nombre "Andar"))
